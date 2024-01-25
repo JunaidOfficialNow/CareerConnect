@@ -1,0 +1,9 @@
+{
+  "hosting": [
+    {
+      "target": "jobs-notifier-client",
+      "source": ".",
+      "frameworksBackend": {}
+    }
+  ]
+}

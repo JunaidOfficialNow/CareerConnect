@@ -1,0 +1,17 @@
+<div mat-dialog-title>{{data.title}}</div>
+<form (ngSubmit)="onSubmit(form)" #form="ngForm">
+<div mat-dialog-content>
+  <mat-form-field>
+    <mat-label>{{data.label}}</mat-label>
+      <input  [placeholder]="data.placeholder" name="input" ngModel #input="ngModel"    required matInput/>
+      @if (input.hasError('required')) {
+        <mat-error>Field is required</mat-error>
+      }
+    </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close >Cancel</button>
+  <button mat-button type="submit" cdkFocusInitial>Add</button>
+</div>
+
+</form>

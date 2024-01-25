@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "jobs-notifier-3dbb5": {
+      "hosting": {
+        "jobs-notifier-client": [
+          "jobs-notifier-3dbb5"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "jobs-notifier-3dbb5"
+  }
+}
