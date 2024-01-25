@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
+import { Auth,  signInWithEmailAndPassword} from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
 @Component({

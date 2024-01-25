@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "jobs-notifier-web": {
+    "career-connect-web": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/jobs-notifier-web",
+            "outputPath": "dist/career-connect-web",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -61,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "jobs-notifier-web:build:production"
+              "buildTarget": "career-connect-web:build:production"
             },
             "development": {
-              "buildTarget": "jobs-notifier-web:build:development"
+              "buildTarget": "career-connect-web:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -72,7 +72,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "jobs-notifier-web:build"
+            "buildTarget": "career-connect-web:build"
           }
         },
         "test": {
@@ -98,7 +98,7 @@
           "builder": "@angular/fire:deploy",
           "options": {
             "version": 2,
-            "browserTarget": "jobs-notifier-web:build:production"
+            "browserTarget": "career-connect-web:build:production"
           }
         }
       }
