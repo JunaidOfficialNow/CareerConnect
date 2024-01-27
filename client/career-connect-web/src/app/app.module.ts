@@ -10,6 +10,7 @@ import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { AdminModule } from './admin/admin.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { environment } from 'src/environments/environment';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,6 +19,7 @@ import { environment } from 'src/environments/environment';
     AppRoutingModule,
     AuthModule,
     AdminModule,
+    HttpClientModule,
     provideFirebaseApp(() =>
       initializeApp(environment.firebase)
     ),

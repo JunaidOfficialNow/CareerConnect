@@ -5,11 +5,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import {MatTableModule} from '@angular/material/table';
 import { InputFieldDialogComponent } from 'src/app/shared/input-field-dialog/input-field-dialog.component';
+import { SkilllsService } from './skillls.service';
 
 const ELEMENT_DATA = [
   {name: 'Hydrogen', actions: 'helo'},
   {name: 'Helium',actions: 'hi'},
-
 ];
 
 
@@ -24,14 +24,14 @@ export class SkillsComponent {
   displayedColumns: string[] = ['name', 'actions'];
   dataSource = ELEMENT_DATA;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private skillService: SkilllsService) {}
 
 
   openAddNewSkillDialog() {
     const dialogRef = this.dialog.open(InputFieldDialogComponent, {data: {title: 'Add New Skill', label: 'New skill', placeholder:  'Eg: Angular'}})
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        
+        this.skillService.createNewSkill(result).subscribe()
       }
     })
 

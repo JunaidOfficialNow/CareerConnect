@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
+const cors = require('cors');
 
 const connetToMongoDB = require('./config/mongodb');
 
@@ -15,7 +16,7 @@ var app = express();
 
 connetToMongoDB();
 
-
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
