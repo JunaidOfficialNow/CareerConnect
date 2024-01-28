@@ -1,19 +1,24 @@
 
-<div class="px-52 pt-32">
-  <div class="button flex justify-end my-4"><button (click)="openAddNewSkillDialog()" mat-raised-button color="primary">Add Skill</button></div>
-  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-    <ng-container matColumnDef="name">
+<div class="px-52 "  [ngClass]="{ 'remove-padding': this.skillsCount !== 0, ' add-padding pt-32': this.skillsCount === 0}">
+  <div class="button flex justify-end my-4"><button appShortcut="a" (appShortcutPressed)="openAddNewSkillDialog()" (click)="openAddNewSkillDialog()" mat-raised-button color="primary">Add Skill</button></div>
+  <mat-table [dataSource]="dataSource$" class="mat-elevation-z8">
+    <ng-container matColumnDef="skill">
       <mat-header-cell mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-      <mat-cell mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.skill | deslugify}} </mat-cell>
     </ng-container>
    
     <ng-container matColumnDef="actions" >
       <mat-header-cell mat-header-cell *matHeaderCellDef > Actions </mat-header-cell>
-      <mat-cell mat-cell *matCellDef="let element"  ><button mat-icon-button color="warn"> <mat-icon>delete</mat-icon> </button> </mat-cell>
+      <mat-cell mat-cell *matCellDef="let element"  ><button mat-icon-button (click)="deleteSkill(element.skill)" color="warn"> <mat-icon>delete</mat-icon> </button> </mat-cell>
     </ng-container>
+
+    <div *matNoDataRow class="mat-row">
+      <div class=" no-data-row mat-cell"  colspan="4"><span class="text-gray-400 ">Add a new skill!</span></div>
+    </div>
   
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row  *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
+  <mat-paginator [length]="skillsCount" (page)="handlePageEvent($event)" [pageSizeOptions]="[10, 25, 50,100]" aria-label="Select page of users"></mat-paginator>
 
 </div>

@@ -14,3 +14,5 @@ exports.createNewSkill = async function (req, res, next) {
     else next(createHttpError.InternalServerError())
   }
 }
+
+exports.getPaginatedSkills
