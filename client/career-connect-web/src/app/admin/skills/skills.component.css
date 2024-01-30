@@ -5,3 +5,11 @@
 }
 
 
+::ng-deep .mdc-notched-outline__notch {
+  border-right: none !important;
+}
+
+.height {
+  height: 3.3rem !important;
+  margin-bottom: 1.1rem
+}

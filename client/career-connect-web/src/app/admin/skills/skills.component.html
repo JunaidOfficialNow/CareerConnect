@@ -1,10 +1,21 @@
 
 <div class="px-52 "  [ngClass]="{ 'remove-padding': this.skillsCount !== 0, ' add-padding pt-32': this.skillsCount === 0}">
-  <div class="button flex justify-end my-4"><button appShortcut="a" (appShortcutPressed)="openAddNewSkillDialog()" (click)="openAddNewSkillDialog()" mat-raised-button color="primary">Add Skill</button></div>
+
+  <div class="button flex gap-2 items-center">
+    <mat-form-field appearance="fill" class="flex-grow">
+      <mat-label>Search</mat-label>
+      <input matInput  #searchInput placeholder="Ex: Angular">
+      @if (searchInput.value !== '') {
+        <mat-icon class="hover:cursor-pointer" matSuffix (click)="searchInput.value = ''">close</mat-icon>
+      }
+    </mat-form-field>
+  
+    <button (click)="openAddNewSkillDialog()" class="height" mat-raised-button color="primary">Add Skill</button>
+  </div>
   <mat-table [dataSource]="dataSource$" class="mat-elevation-z8">
     <ng-container matColumnDef="skill">
       <mat-header-cell mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-      <mat-cell mat-cell *matCellDef="let element"> {{element.skill | deslugify}} </mat-cell>
+      <mat-cell mat-cell *matCellDef="let element"> {{element.skill | deslugify }} </mat-cell>
     </ng-container>
    
     <ng-container matColumnDef="actions" >

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -13,6 +13,9 @@ import {
 } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { DeslugifyPipe } from 'src/app/shared/deslugify.pipe';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import {  MatInputModule } from '@angular/material/input';
+import { debounceTime, distinctUntilChanged, fromEvent, map, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-admin-skills',
@@ -26,19 +29,31 @@ import { DeslugifyPipe } from 'src/app/shared/deslugify.pipe';
     MatIconModule,
     MatPaginatorModule,
     CommonModule,
-    DeslugifyPipe
+    DeslugifyPipe,
+    MatFormFieldModule,
+    MatInputModule
   ],
 })
-export class SkillsComponent implements OnInit {
+export class SkillsComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['skill', 'actions'];
   skillsCount: number = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild('searchInput') searchInput! : ElementRef;
 
   constructor(
     private dialog: MatDialog,
     private skillService: SkilllsService
   ) {}
+  ngAfterViewInit(): void {
+    fromEvent<Event>(this.searchInput.nativeElement, 'input').
+    pipe(
+      debounceTime(300),
+      map((event: Event) => (event.target as HTMLInputElement)?.value ),
+      distinctUntilChanged(),
+      switchMap((query) => of(this.searchInput.nativeElement.value))
+    ).subscribe((results) => console.log(results))
+  }
   dataSource$ = this.skillService.skills.asObservable();
 
   ngOnInit(): void {
@@ -73,6 +88,10 @@ export class SkillsComponent implements OnInit {
     });
   }
 
+  applyFilter(e : Event) {
+
+  }
+ 
   deleteSkill(id: string) {
     this.skillService
       .deleteSkill(id, this.paginator.pageIndex + 1, this.paginator.pageSize)
