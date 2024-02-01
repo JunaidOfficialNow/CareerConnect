@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EducationsComponent } from './educations/educations.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 
 
@@ -47,6 +48,10 @@ import { EducationsComponent } from './educations/educations.component';
           {
             path: 'educations',
             component: EducationsComponent
+          },
+          {
+            path: 'categories',
+            component: CategoriesComponent
           },
           {
             path: '',
