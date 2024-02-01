@@ -1,21 +1,21 @@
-const SkillsModel = require('../models/skillModel');
+const EducationsModel = require('../models/skillModel');
 const createHttpError = require('http-errors');
 const slugify = require('../utils/slugify');
 const { logger } = require('../config/logger');
 
-exports.createNewSkill = async function (req, res, next) {
+exports.createNewEducation = async function (req, res, next) {
   try {
-    const { skill } = req.body;
-   const skillDoc = await SkillsModel.create({ skill : slugify(skill)})
-   logger.info('New skill added', {skill :skillDoc.skill})
-    res.json({ skill: skillDoc.skill})
+    const { education } = req.body;
+   const educationDoc = await EducationsModel.create({ education : slugify(education)})
+   logger.info('New Education Added', {education :educationDoc.education})
+    res.json({ education: educationDoc.education})
   } catch (err) {
     if (err.code === 11000) next(createHttpError.Conflict('The skill already exists'))
     else next(err)
   }
 }
 
-exports.getSkills = async (req, res, next) => {
+exports.getEducations = async (req, res, next) => {
   let {page, limit, query} = req.query;
   if ((isNaN(page) && page !== undefined) || page < 1) {
     return next(
@@ -39,13 +39,13 @@ exports.getSkills = async (req, res, next) => {
     const aggregationPipeline = [
       {
         $match: {
-          skill: { $regex: new RegExp(`^${slugify(query)}`, 'i') }
+          education: { $regex: new RegExp(`^${slugify(query)}`, 'i') }
         }
       },
       {
         $group: {
           _id: null,
-          skills: { $push: '$$ROOT' },
+          educations: { $push: '$$ROOT' },
           count: { $sum: 1 }
         }
       },
@@ -57,15 +57,15 @@ exports.getSkills = async (req, res, next) => {
       {
         $project: {
           _id: 0,
-          skills: { $slice: ['$skills', (page-1) * (limit || 10), parseInt(limit || 10)]},
+          educations: { $slice: ['$educations', (page-1) * (limit || 10), parseInt(limit || 10)]},
           count: 1
         }
       }
     ];
 
 
-    const results = await SkillsModel.aggregate(aggregationPipeline)
-    res.json(results[0] ? results[0] : { count: 0 , skills: []});
+    const results = await EducationsModel.aggregate(aggregationPipeline)
+    res.json(results[0] ? results[0] : { count: 0 , educations: []});
   } catch (error) {
     logger.error(error.message);
     next(error);
@@ -73,12 +73,12 @@ exports.getSkills = async (req, res, next) => {
 };
 
 
-exports.deleteSkills = async (req, res, next) => {
-  const { skillId } = req.params;
+exports.deleteEducation = async (req, res, next) => {
+  const { educationId } = req.params;
   try {
-    const response = await SkillsModel.findByIdAndDelete(skillId);
+    const response = await EducationsModel.findByIdAndDelete(educationId);
     if (response) res.status(204).end();
-    else throw new createHttpError.NotFound('Couldn\'t find the skill  with id ' + skillId);
+    else throw new createHttpError.NotFound('Couldn\'t find the education  with id ' + educationId);
   } catch (error) {
     logger.error(error.message, error);
     next(error);
