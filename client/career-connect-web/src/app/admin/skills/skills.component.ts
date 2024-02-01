@@ -3,7 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatRippleModule } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { InputFieldDialogComponent } from 'src/app/shared/input-field-dialog/input-field-dialog.component';
 import { SkilllsService } from './skillls.service';
 import {
@@ -36,7 +36,8 @@ import { debounceTime, distinctUntilChanged, fromEvent, map, of, switchMap } fro
 })
 export class SkillsComponent implements OnInit, AfterViewInit {
   displayedColumns: string[] = ['skill', 'actions'];
-  skillsCount: number = 0;
+  skillsCount$ = this.skillService.count$.asObservable();
+  dataSource$ = this.skillService.skills$.asObservable();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('searchInput') searchInput! : ElementRef;
@@ -45,26 +46,28 @@ export class SkillsComponent implements OnInit, AfterViewInit {
     private dialog: MatDialog,
     private skillService: SkilllsService
   ) {}
+
   ngAfterViewInit(): void {
     fromEvent<Event>(this.searchInput.nativeElement, 'input').
     pipe(
       debounceTime(300),
       map((event: Event) => (event.target as HTMLInputElement)?.value ),
       distinctUntilChanged(),
-      switchMap((query) => of(this.searchInput.nativeElement.value))
-    ).subscribe((results) => console.log(results))
+      switchMap(() => of(this.skillService.getPaginatedResults(1, this.paginator.pageSize, this.searchInput.nativeElement.value)))
+    ).subscribe()
   }
-  dataSource$ = this.skillService.skills.asObservable();
 
   ngOnInit(): void {
-    this.skillService
-      .getSkillsCount()
-      .subscribe((res) => (this.skillsCount = res.count));
-    this.skillService.getPaginatedResults(1, 10);
+    this.skillService.getPaginatedResults(1, 10, '');
+  }
+
+  clearFilter() {
+    this.searchInput.nativeElement.value = '';
+    this.skillService.getPaginatedResults(1, 10, '');
   }
 
   handlePageEvent(e: PageEvent) {
-    this.skillService.getPaginatedResults(e.pageIndex + 1, e.pageSize);
+    this.skillService.getPaginatedResults(e.pageIndex + 1, e.pageSize, this.searchInput.nativeElement.value);
   }
 
   openAddNewSkillDialog() {
@@ -81,20 +84,17 @@ export class SkillsComponent implements OnInit, AfterViewInit {
           .createNewSkill(
             result,
             this.paginator.pageIndex + 1,
-            this.paginator.pageSize
+            this.paginator.pageSize,
+            this.searchInput.nativeElement.value
           )
-          .subscribe(() => this.skillsCount++);
+          .subscribe();
       }
     });
   }
 
-  applyFilter(e : Event) {
-
-  }
- 
   deleteSkill(id: string) {
     this.skillService
-      .deleteSkill(id, this.paginator.pageIndex + 1, this.paginator.pageSize)
-      .subscribe(() => this.skillsCount--);
+      .deleteSkill(id, this.paginator.pageIndex + 1, this.paginator.pageSize, this.searchInput.nativeElement.value)
+      .subscribe();
   }
 }

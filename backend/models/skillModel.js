@@ -1,7 +1,11 @@
 const mongoose = require('mongoose');
 
 const  SkillSchema = mongoose.Schema({
-  _id: String
+  skill: {
+    type: String,
+    required: true,
+    unique: true,
+  }
 }, { timestamps: true})
 
 module.exports = mongoose.model('skills', SkillSchema);
