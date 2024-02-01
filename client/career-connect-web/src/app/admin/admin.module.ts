@@ -11,6 +11,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { EducationsComponent } from './educations/educations.component';
 
 
 
@@ -42,6 +43,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
           {
             path: 'skills',
             component: SkillsComponent
+          },
+          {
+            path: 'educations',
+            component: EducationsComponent
           },
           {
             path: '',
