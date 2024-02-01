@@ -6,7 +6,7 @@ const router = Router();
 
 router.post('/', createNewCategory);
 router.get('/', getCategories);
-router.delete('/:skillId', deleteCategory)
+router.delete('/:categoryId', deleteCategory)
 
 
 module.exports = router;

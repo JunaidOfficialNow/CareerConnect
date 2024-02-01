@@ -43,15 +43,15 @@ exports.getSkills = async (req, res, next) => {
         }
       },
       {
+        $sort: {
+          createdAt: -1
+        }
+      },
+      {
         $group: {
           _id: null,
           skills: { $push: '$$ROOT' },
           count: { $sum: 1 }
-        }
-      },
-      {
-        $sort: {
-          createdAt: -1
         }
       },
       {

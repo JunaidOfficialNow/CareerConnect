@@ -6,7 +6,7 @@ const router = Router();
 
 router.post('/', createNewEducation);
 router.get('/', getEducations);
-router.delete('/:skillId', deleteEducation)
+router.delete('/:educationId', deleteEducation)
 
 
 module.exports = router;
