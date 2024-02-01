@@ -7,9 +7,10 @@ const cors = require('cors');
 
 const connetToMongoDB = require('./config/mongodb');
 
-var indexRouter = require('./routes/index');
+var categoryRotuer = require('./routes/category');
 var usersRouter = require('./routes/users');
 const skillsRouter = require('./routes/skills');
+const EducationRouter = require('./routes/educations');
 
 var app = express();
 
@@ -23,9 +24,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
+app.use('/categories', categoryRotuer);
 app.use('/users', usersRouter);
 app.use('/skills', skillsRouter);
+app.use('/educations', EducationRouter)
 
 
 

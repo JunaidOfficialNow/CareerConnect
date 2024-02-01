@@ -1,4 +1,4 @@
-const EducationsModel = require('../models/skillModel');
+const EducationsModel = require('../models/educationsModel');
 const createHttpError = require('http-errors');
 const slugify = require('../utils/slugify');
 const { logger } = require('../config/logger');
@@ -10,7 +10,7 @@ exports.createNewEducation = async function (req, res, next) {
    logger.info('New Education Added', {education :educationDoc.education})
     res.json({ education: educationDoc.education})
   } catch (err) {
-    if (err.code === 11000) next(createHttpError.Conflict('The skill already exists'))
+    if (err.code === 11000) next(createHttpError.Conflict('The education already exists'))
     else next(err)
   }
 }
