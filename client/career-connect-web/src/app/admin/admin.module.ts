@@ -13,6 +13,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EducationsComponent } from './educations/educations.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormComponent } from './form/form.component';
+import { AddNotificationDialogComponent } from './notifications/add-notification-dialog/add-notification-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule} from '@angular/material/autocomplete'
 
 
 
@@ -22,12 +31,17 @@ import { CategoriesComponent } from './categories/categories.component';
     LayoutComponent,
     NotificationsComponent,
     DashboardComponent,
+    FormComponent,
+    AddNotificationDialogComponent
   ],
   imports: [
     CommonModule, 
     MatButtonModule,
     MatIconModule,
     MatTableModule,
+    MatDialogModule,
+    MatChipsModule,
+    MatAutocompleteModule,
     RouterModule.forChild([
       {
         path: 'admin',
@@ -63,7 +77,11 @@ import { CategoriesComponent } from './categories/categories.component';
     ]),
     MatGridListModule,
     MatCardModule,
-    MatMenuModule
+    MatMenuModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    ReactiveFormsModule
   ]
 })
 export class AdminModule { }

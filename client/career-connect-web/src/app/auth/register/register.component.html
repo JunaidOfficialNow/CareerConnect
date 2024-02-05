@@ -1,0 +1,207 @@
+<div class="flex min-h-full flex-col   py-12 px-32">
+  
+  <mat-stepper linear #stepper>
+    <mat-step>
+     <ng-template matStepLabel>Fill out basic details</ng-template>
+
+     <form  novalidate >
+      <mat-card class="register-card">
+
+        <!-- <mat-card-header >Register yourself</mat-card-header> -->
+    
+        <mat-card-content>
+
+
+          <div class="row">
+            <div class="col flex justify-center">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Name" >
+              </mat-form-field>
+            </div>
+          </div>
+    
+
+          <div class="row">
+            <div class="col flex justify-center">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Email" >
+              </mat-form-field>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col flex justify-center">
+              <mat-form-field class="full-width">
+                <input matInput type="number" placeholder="Number" >
+              </mat-form-field>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col flex justify-center">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Age" type="number" >
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col flex justify-center">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Password" type="password" >
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col flex justify-center">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Confirm password" type="password" >
+              </mat-form-field>
+            </div>
+          </div>
+    
+
+
+        
+
+        </mat-card-content>
+        <mat-card-actions align="end">
+          <button mat-raised-button color="primary" type="submit">Submit</button>
+        </mat-card-actions>
+      </mat-card>
+    </form>
+    
+
+
+
+
+
+     <!-- <button mat-button matStepperNext>Next</button> -->
+
+    </mat-step>
+    <mat-step label="List out  your job preferences">
+      <form  novalidate>
+        <mat-card class="shipping-card">
+      
+          <mat-card-content>
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Job title">
+                </mat-form-field>
+              </div>
+            </div>
+      
+      
+            <div class="row">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Company/dept" >
+                  <!-- @if (addressForm.controls['firstName'].hasError('required')) {
+                    <mat-error>First name is <strong>required</strong></mat-error>
+                  } -->
+                </mat-form-field>
+            </div>
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <textarea matInput placeholder="description" ></textarea>
+                  <!-- @if (addressForm.controls['address'].hasError('required')) {
+                    <mat-error>Address is <strong>required</strong></mat-error>
+                  } -->
+                </mat-form-field>
+              </div>
+            </div>
+      
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Location">
+                  <!-- @if (addressForm.controls['city'].hasError('required')) {
+                    <mat-error>City is <strong>required</strong></mat-error>
+                  } -->
+                </mat-form-field>
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Deadline" type="date" >
+                  <!-- @if (addressForm.controls['city'].hasError('required')) {
+                    <mat-error>City is <strong>required</strong></mat-error>
+                  } -->
+                </mat-form-field>
+              </div>
+    
+            </div>
+      
+
+            <div class="row">
+              <mat-form-field class="full-width">
+                <mat-label>Skills needed</mat-label>
+                <mat-chip-grid #chipGrid aria-label="Fruit selection">
+                  <!-- @for (fruit of fruits; track fruit) { -->
+                    <mat-chip-row >
+                      fruit
+                      <button matChipRemove [attr.aria-label]="'remove '">
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                    </mat-chip-row>
+                  <!-- } -->
+                </mat-chip-grid>
+                <input placeholder="New Fruit..." #fruitInput
+                  [matChipInputFor]="chipGrid" [matAutocomplete]="auto"
+                  />
+                <mat-autocomplete #auto="matAutocomplete" >
+                  <!-- @for (fruit of filteredFruits | async; track fruit) { -->
+                    <mat-option [value]="'fruit'">fruit</mat-option>
+                  <!-- } -->
+                </mat-autocomplete>
+              </mat-form-field>
+            
+            </div>
+      
+            <div class="row">
+                <mat-radio-group >
+                  <mat-radio-button value="free">On-site</mat-radio-button>
+                  <mat-radio-button value="priority">Remote</mat-radio-button>
+                  <mat-radio-button value="nextday">Hybrid</mat-radio-button>
+                </mat-radio-group>
+            </div>
+      
+            <div class="row">
+              <mat-radio-group class="full-width" >
+                <mat-radio-button value="free">Govt</mat-radio-button>
+                <mat-radio-button value="priority">Non-Govt</mat-radio-button>
+              </mat-radio-group>
+          </div>
+      
+      
+
+      
+     
+          
+          
+      
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" type="submit">Submit</button>
+          </mat-card-actions>
+        </mat-card>
+      </form>
+      
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+
+</div>

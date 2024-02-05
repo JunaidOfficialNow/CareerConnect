@@ -4,8 +4,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-add-notification-dialog',
-  standalone: true,
-  imports: [MatDialogModule, MatButtonModule],
   templateUrl: './add-notification-dialog.component.html',
   styleUrl: './add-notification-dialog.component.css'
 })
