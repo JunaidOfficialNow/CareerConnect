@@ -10,6 +10,18 @@ export interface ICreateUserRequest {
   email: string;
 }
 
+export interface UpdateJobPreferenceDTO {
+   highestEducation: string;
+   course: string | null | undefined;
+   remoteJob: boolean,
+   OnSiteJob: boolean;
+   HybridJob: boolean;
+   govtJob: boolean;
+   nonGovtJob: boolean;
+   skills: string[];
+   categoriesInterested: string[];
+}
+
 export interface ISampleLists {
   skills: { skill: string }[];
   educations: { education: string }[];
@@ -23,7 +35,7 @@ export class RegisterService {
   constructor(private http: HttpClient) {}
 
   createNewUser(userRequest: ICreateUserRequest) {
-    return this.http.post(environment.baseUrl + '/users', {
+    return this.http.post<{_id: string}>(environment.baseUrl + '/users', {
       name: userRequest.name,
       email: userRequest.email,
       age: parseInt(userRequest.age),
@@ -45,5 +57,9 @@ export class RegisterService {
 
   getEducationFilters(query: string) {
     return this.http.get<{_id: string, education: string}[]>(environment.baseUrl + '/filters/educations/' + query);
+  }
+
+  updateJobPreferences(userId: string, dto: UpdateJobPreferenceDTO) {
+    return this.http.post(environment.baseUrl + '/users/job-preferences/' + userId, dto )
   }
 }

@@ -1,10 +1,10 @@
 <div class="flex min-h-full flex-col   py-12 px-32">
 
   <mat-stepper linear #stepper>
-    <mat-step>
+    <mat-step [stepControl]="basicDetailsFormGroup" [editable]="false">
       <ng-template matStepLabel>Fill out basic details</ng-template>
 
-      <form [formGroup]="basicDetailsFormGroup" (ngSubmit)="onBasicDetailsFormSubmit()">
+      <form [formGroup]="basicDetailsFormGroup"  (ngSubmit)="onBasicDetailsFormSubmit()">
         <mat-card class="card">
 
           <!-- <mat-card-header >Register yourself</mat-card-header> -->
@@ -109,7 +109,7 @@
       <!-- <button mat-button matStepperNext>Next</button> -->
 
     </mat-step>
-    <mat-step label="List out  your job preferences">
+    <mat-step label="List out  your job preferences" [editable]="false">
       <form [formGroup]="jobPreferenceFormGroup" (ngSubmit)="onJobPreferenceFormSubmit()">
         <mat-card class="card">
 
@@ -247,11 +247,16 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
-      <p>You are now done.</p>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
-      </div>
+      <mat-card class="card">
+        <mat-card-content  >
+          <div class="flex flex-col justify-center items-center">
+            <p>You are now done.</p>
+            <div>
+              <button mat-button (click)="goToHome()">Go to home</button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </mat-step>
   </mat-stepper>
 

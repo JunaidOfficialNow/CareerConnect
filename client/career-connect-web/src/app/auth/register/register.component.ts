@@ -10,6 +10,7 @@ import { Subscription, debounceTime, distinctUntilChanged, filter, fromEvent, ma
 import { MatChipInputEvent } from '@angular/material/chips';
 import { slugify } from 'src/app/shared/slugify';
 import { deslugify } from 'src/app/shared/deslugify';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -17,6 +18,7 @@ import { deslugify } from 'src/app/shared/deslugify';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
+  userId: string | null = null;
   basicDetailsFormGroup = this._formBuilder.group(
     {
       name: ['', Validators.required],
@@ -41,7 +43,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
     govtJob: false,
     nonGovtJob: false,
     skills: [([] as string[])],
-    categories: [([] as string[])],
+    categoriesInterested: [([] as string[])],
   });
   separatorKeysCodes = [ENTER,COMMA]
   qualifications = ['High School', 'SSLC', 'Higher Secondary', 'Graduation', 'Post Graduation'];
@@ -100,6 +102,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
     private _formBuilder: FormBuilder,
     private registerService: RegisterService,
     private auth: Auth,
+    private router: Router
   ) {}
   ngOnDestroy(): void {
     this.skillInputSubscription?.unsubscribe();
@@ -136,7 +139,21 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onJobPreferenceFormSubmit() {
-  console.log(this.jobPreferenceFormGroup.value);
+    if (this.jobPreferenceFormGroup.valid && this.userId) {
+      this.registerService.updateJobPreferences(this.userId, 
+        {
+          highestEducation: this.jobPreferenceFormGroup.value['highestEducation']!,
+          skills: this.jobPreferenceFormGroup.value['skills']!,
+          categoriesInterested: this.jobPreferenceFormGroup.value['categoriesInterested']!,
+          course: this.jobPreferenceFormGroup.value['course'],
+          remoteJob: this.jobPreferenceFormGroup.value['remoteJob']!,
+          HybridJob: this.jobPreferenceFormGroup.value['HybridJob']!,
+          govtJob: this.jobPreferenceFormGroup.value['govtJob']!,
+          nonGovtJob: this.jobPreferenceFormGroup.value['nonGovtJob']!,
+          OnSiteJob: this.jobPreferenceFormGroup.value['OnSiteJob']!,
+        }
+        ).subscribe(() => this.stepper.next());
+    }
   }
 
   displayFn(value: string) {
@@ -158,7 +175,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
     const value = event.option.value
     if (!this.categoriesSelected.includes(value)) {
       this.categoriesSelected.push(value)
-      this.jobPreferenceFormGroup.controls['categories'].setValue(this.categoriesSelected)
+      this.jobPreferenceFormGroup.controls['categoriesInterested'].setValue(this.categoriesSelected)
     }
     this.categoryInput.nativeElement.value = '';
     this.filteredCategories = this.sampleLists.categories;
@@ -178,7 +195,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
   removedCategory(category: string) {
     const index = this.categoriesSelected.indexOf(category);
     this.categoriesSelected.splice(index, 1);
-    this.jobPreferenceFormGroup.controls['categories'].setValue(this.categoriesSelected);
+    this.jobPreferenceFormGroup.controls['categoriesInterested'].setValue(this.categoriesSelected);
   }
   
 
@@ -198,16 +215,18 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
           email: this.basicDetailsFormGroup.value['email']!,
         })
         .subscribe((res) => {
-          console.log(res);
+          this.userId = res._id;
           createUserWithEmailAndPassword(
             this.auth,
             this.basicDetailsFormGroup.value['email']!,
             this.basicDetailsFormGroup.value['password']!
-          ).then((res) => {
-            console.log(res);
+          ).then(() => {
             this.stepper.next();
           });
         });
     }
+  }
+  goToHome() {
+    this.router.navigateByUrl('/home');
   }
 }
