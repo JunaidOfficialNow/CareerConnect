@@ -6,6 +6,10 @@
 /out-tsc
 /bazel-out
 
+#firebase
+.firebaserc
+firebase.json
+
 environment.ts
 environment.development.ts
 

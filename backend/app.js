@@ -11,6 +11,7 @@ var categoryRotuer = require('./routes/category');
 var usersRouter = require('./routes/users');
 const skillsRouter = require('./routes/skills');
 const EducationRouter = require('./routes/educations');
+const filtersRouter = require('./routes/filters');
 
 var app = express();
 
@@ -27,7 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/categories', categoryRotuer);
 app.use('/users', usersRouter);
 app.use('/skills', skillsRouter);
-app.use('/educations', EducationRouter)
+app.use('/educations', EducationRouter);
+app.use('/filters', filtersRouter);
 
 
 

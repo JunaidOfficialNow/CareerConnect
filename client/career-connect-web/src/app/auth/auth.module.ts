@@ -13,6 +13,10 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule} from '@angular/material/autocomplete'
 import { MatIconModule } from '@angular/material/icon';
+import { RegisterService } from './register/register.service';
+import { MatSelectModule } from '@angular/material/select';
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { DeslugifyPipe } from './register/deslugify.pipe';
 
 
 
@@ -20,7 +24,8 @@ import { MatIconModule } from '@angular/material/icon';
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    DeslugifyPipe
   ],
   imports: [
     CommonModule,
@@ -31,6 +36,8 @@ import { MatIconModule } from '@angular/material/icon';
     ReactiveFormsModule,
     MatChipsModule,
     MatIconModule,
+    MatSelectModule,
+    MatCheckboxModule,
     MatAutocompleteModule,
     FormsModule,
     MatCardModule,
@@ -50,6 +57,7 @@ import { MatIconModule } from '@angular/material/icon';
       ]
     }]),
     FormsModule
-  ]
+  ],
+  providers: [RegisterService]
 })
 export class AuthModule { }
