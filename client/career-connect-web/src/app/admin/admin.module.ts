@@ -17,11 +17,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormComponent } from './form/form.component';
 import { AddNotificationDialogComponent } from './notifications/add-notification-dialog/add-notification-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatAutocompleteModule} from '@angular/material/autocomplete'
+import { MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { DeslugifyPipeModule } from '../shared/deslugify.pipe';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 
@@ -31,16 +34,19 @@ import { MatAutocompleteModule} from '@angular/material/autocomplete'
     LayoutComponent,
     NotificationsComponent,
     DashboardComponent,
-    FormComponent,
-    AddNotificationDialogComponent
+    AddNotificationDialogComponent,
   ],
   imports: [
     CommonModule, 
     MatButtonModule,
     MatIconModule,
+    MatSnackBarModule,
     MatTableModule,
     MatDialogModule,
     MatChipsModule,
+    MatNativeDateModule,
+    MatDatepickerModule,
+    DeslugifyPipeModule,
     MatAutocompleteModule,
     RouterModule.forChild([
       {

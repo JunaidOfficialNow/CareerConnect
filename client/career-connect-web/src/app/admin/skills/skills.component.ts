@@ -12,7 +12,7 @@ import {
   PageEvent,
 } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
-import { DeslugifyPipe } from 'src/app/shared/deslugify.pipe';
+import {  DeslugifyPipeModule } from 'src/app/shared/deslugify.pipe';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {  MatInputModule } from '@angular/material/input';
 import { debounceTime, distinctUntilChanged, fromEvent, map, of, switchMap } from 'rxjs';
@@ -29,7 +29,7 @@ import { debounceTime, distinctUntilChanged, fromEvent, map, of, switchMap } fro
     MatIconModule,
     MatPaginatorModule,
     CommonModule,
-    DeslugifyPipe,
+    DeslugifyPipeModule,
     MatFormFieldModule,
     MatInputModule
   ],

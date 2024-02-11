@@ -1,9 +1,251 @@
 
-<h2 mat-dialog-title>Install Angular</h2>
+<h2 mat-dialog-title>Create new Job notification</h2>
+<form [formGroup]="jobNotificationFormGroup" novalidate (ngSubmit)="onSubmit()">
 <mat-dialog-content class="mat-typography">
- <app-form></app-form>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>Install</button>
-</mat-dialog-actions>
+    <mat-card class="shipping-card">
+  
+      <mat-card-content>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-label>Job title</mat-label>
+              <input matInput placeholder="Job title" formControlName="jobTitle">
+              @if (jobNotificationFormGroup.controls['jobTitle'].hasError('required')) {
+                <mat-error>Job title is required </mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+  
+  
+        <div class="row">
+            <mat-form-field class="full-width">
+              <mat-label>Company/dept</mat-label>
+              <input matInput placeholder="Company/dept" formControlName="CompanyOrDept">
+              @if (jobNotificationFormGroup.controls['CompanyOrDept'].hasError('required')) {
+                <mat-error>Company/dept name is <strong>required</strong></mat-error>
+              }
+            </mat-form-field>
+        </div>
+  
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-label>description</mat-label>
+              <textarea matInput placeholder="description" formControlName="description"></textarea>
+              @if (jobNotificationFormGroup.controls['description'].hasError('required')) {
+                <mat-error>Description is <strong>required</strong></mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-label>Location</mat-label>
+              <input matInput placeholder="Location" formControlName="location">
+              @if (jobNotificationFormGroup.controls['location'].hasError('required')) {
+                <mat-error>Location is <strong>required</strong></mat-error>
+              }
+            </mat-form-field>
+          </div>
+  
+  
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-label>Category</mat-label>
+              <input type="text"
+                     placeholder="Category"
+                     aria-label="Category"
+                     matInput
+                     #categoryInput
+                     formControlName="category"
+                     [matAutocomplete]="categoryAuto">
+              <mat-autocomplete requireSelection [displayWith]="displayFn" #categoryAuto="matAutocomplete">
+                <mat-option *ngFor="let category of filteredCategories " [value]="category.category">
+                  {{category.category | deslugify}}
+                </mat-option>
+              </mat-autocomplete>
+              @if (jobNotificationFormGroup.controls['category'].hasError('required')) {
+                <mat-error>Category is required</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Choose a date</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="deadline">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              @if (jobNotificationFormGroup.controls['deadline'].hasError('required')) {
+                <mat-error>Select a deadline</mat-error>
+              }
+            </mat-form-field>
+          </div>
+  
+  
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-label>Min. Qualification</mat-label>
+              <mat-select placeholder="Min. Qualification" #select formControlName="minQualification">
+                @for (qualification of qualifications; track qualification) {
+                  <mat-option [value]="qualification">{{ qualification }}</mat-option>
+                }
+              </mat-select>
+              @if (jobNotificationFormGroup.controls['minQualification'].hasError('required')) {
+                <mat-error>Min Qualification is <strong>required</strong></mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+  
+              <div class="row">
+          <div class="col">
+            @if (select.value == 'Graduation' || select.value == 'Post Graduation') {
+              <mat-form-field class="full-width">
+                <mat-label>Educations</mat-label>
+                <mat-chip-grid #educationChipGrid aria-label="Fruit selection">
+                  @for (education of educationsSelected; track education) {
+                    <mat-chip-row (removed)="removedEducation(education)">
+                      {{education | deslugify}}
+                      <button matChipRemove [attr.aria-label]="'remove ' + education">
+                        <mat-icon>cancel</mat-icon>
+                      </button>
+                    </mat-chip-row>
+                  }
+                </mat-chip-grid>
+                <input placeholder="Search education" #educationsInput 
+                  [matChipInputFor]="educationChipGrid" [matAutocomplete]="educationAuto"/>
+                <mat-autocomplete requireSelection #educationAuto="matAutocomplete"  (optionSelected)="selectedEducation($event)">
+                  @for (education of filteredEducations ; track education) {
+                    <mat-option [value]="education.education">{{education.education | deslugify}}</mat-option>
+                  }
+                </mat-autocomplete>
+                @if (jobNotificationFormGroup.controls['educations'].hasError('required')) {
+                  <mat-error>Select the educations needed</mat-error>
+                }
+              </mat-form-field>
+            }
+          </div>
+        </div>
+
+        <div class="row">
+          <mat-form-field class="full-width">
+            <mat-label>Skills needed</mat-label>
+            <mat-chip-grid #skillsChipGrid aria-label="skills needed">
+              @for (skill of skillsSelected; track skill) {
+                <mat-chip-row (removed)="removedSkill(skill)">
+                  {{skill | deslugify}}
+                  <button matChipRemove [attr.aria-label]="'remove ' + skill">
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+              }
+            </mat-chip-grid>
+ 
+            <input placeholder="Search skills" #skillsInput
+            matInput
+              [matChipInputFor]="skillsChipGrid" [matAutocomplete]="skillsAuto"
+              />
+            <mat-autocomplete #skillsAuto="matAutocomplete" requireSelection  (optionSelected)="selectedSkill($event)">
+              @for (skill of filteredSkills ; track skill) {
+                <mat-option [value]="skill.skill">{{skill.skill | deslugify}}</mat-option>
+              }
+            </mat-autocomplete>      
+          </mat-form-field>
+
+      
+        
+        </div>
+     
+
+  
+        <div class="row">
+            <mat-radio-group formControlName="jobType">
+              <mat-radio-button color="primary" value="OnSiteJob">On-site</mat-radio-button>
+              <mat-radio-button color="primary" value="remoteJob">Remote</mat-radio-button>
+              <mat-radio-button color="primary" value="HybridJob">Hybrid</mat-radio-button>
+              @if (jobNotificationFormGroup.controls['jobType'].hasError('required') ) {
+                <mat-error>Select job type</mat-error>
+              }
+            </mat-radio-group>
+        </div>
+  
+        <div class="row">
+          <mat-radio-group class="full-width" formControlName="govtOrNot">
+            <mat-radio-button color="primary" value="govtJob">Govt</mat-radio-button>
+            <mat-radio-button  color="primary" value="nonGovtJob">Non-Govt</mat-radio-button>
+            @if (jobNotificationFormGroup.controls['govtOrNot'].hasError('required')) {
+              <mat-error>Please select Govt or Not</mat-error>
+            }
+          </mat-radio-group>
+      </div>
+  
+  
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-label>Application link</mat-label>
+              <input matInput placeholder="Application link" type="text" formControlName="applicationLink">
+              @if (jobNotificationFormGroup.controls['applicationLink'].hasError('required')) {
+                <mat-error>Application link is required</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+  
+  
+        @if(addOfficialLink) {
+          
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-label>Official Link</mat-label>
+              <input matInput placeholder="Official Link" formControlName="officialLink">
+            </mat-form-field>
+          </div>
+        </div>
+  
+      } @else {
+        <button mat-button type="button" (click)="addOfficialLink = !addOfficialLink">
+          + Add Official notification link
+        </button>
+      
+      }
+  
+      @if(addWebsiteLink) {
+          
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <mat-label>Website Link</mat-label>
+              <input matInput placeholder="Website Link" formControlName="websiteLink">
+            </mat-form-field>
+          </div>
+        </div>
+  
+      } @else {
+        <button mat-button type="button" (click)="addWebsiteLink = !addWebsiteLink">
+          + Add website link
+        </button>
+      
+      }
+      
+  
+      </mat-card-content>
+
+    </mat-card>
+    
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="null" color="secondary" type="button">Close</button>
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+    
+  </mat-dialog-actions>
+</form>
+

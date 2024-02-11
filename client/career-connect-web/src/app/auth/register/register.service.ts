@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { ISampleLists } from 'src/app/shared/SampleLists.interface';
 import { environment } from 'src/environments/environment';
 
 export interface ICreateUserRequest {
@@ -22,11 +22,6 @@ export interface UpdateJobPreferenceDTO {
    categoriesInterested: string[];
 }
 
-export interface ISampleLists {
-  skills: { skill: string }[];
-  educations: { education: string }[];
-  categories: { category: string }[];
-}
 
 @Injectable({
   providedIn: 'root',
@@ -43,21 +38,6 @@ export class RegisterService {
     });
   }
 
-  getSampleLists() {
-    return this.http.get<ISampleLists>(environment.baseUrl + '/filters');
-  }
-
-  getCategoryFilters(query: string) {
-    return this.http.get<{_id: string, category: string}[]>(environment.baseUrl + '/filters/category/' + query);
-  }
-
-  getSkillsFilters(query: string) {
-    return this.http.get<{_id: string, skill: string}[]>(environment.baseUrl + '/filters/skills/' + query);
-  }
-
-  getEducationFilters(query: string) {
-    return this.http.get<{_id: string, education: string}[]>(environment.baseUrl + '/filters/educations/' + query);
-  }
 
   updateJobPreferences(userId: string, dto: UpdateJobPreferenceDTO) {
     return this.http.post(environment.baseUrl + '/users/job-preferences/' + userId, dto )

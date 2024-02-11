@@ -1,8 +1,7 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { NgModule, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'deslugify',
-  standalone: true,
 })
 export class DeslugifyPipe implements PipeTransform {
   transform(slug: string, ...args: unknown[]): unknown {
@@ -21,3 +20,9 @@ export class DeslugifyPipe implements PipeTransform {
     return str;
   }
 }
+
+@NgModule({
+  declarations: [DeslugifyPipe],
+  exports: [DeslugifyPipe],
+})
+export class DeslugifyPipeModule {}

@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {animate, state, style, transition, trigger} from '@angular/animations';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNotificationDialogComponent } from './add-notification-dialog/add-notification-dialog.component';
+import { JobNotification } from './JobNotification.interface';
+import { JobNotificationService } from './notification.service';
 
 @Component({
   selector: 'app-admin-notifications',
@@ -21,10 +23,15 @@ export class NotificationsComponent {
   columnsToDisplayWithExpand = [...this.columnsToDisplay, 'expand'];
   expandedElement: PeriodicElement | null = null;
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private jobNotificationService: JobNotificationService) {}
 
   OpenAddNewNotificationDialog() {
-    this.dialog.open(AddNotificationDialogComponent)
+    this.dialog.open<AddNotificationDialogComponent,null, JobNotification>(AddNotificationDialogComponent , {disableClose: true}).afterClosed().subscribe((res) => {
+      if (res) {
+        this.jobNotificationService.addNewJobNotification(res).subscribe();
+      }
+
+    });
   }
 }
 

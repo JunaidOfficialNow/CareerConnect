@@ -12,6 +12,7 @@ var usersRouter = require('./routes/users');
 const skillsRouter = require('./routes/skills');
 const EducationRouter = require('./routes/educations');
 const filtersRouter = require('./routes/filters');
+const notificationsRouter = require('./routes/notifications');
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use('/users', usersRouter);
 app.use('/skills', skillsRouter);
 app.use('/educations', EducationRouter);
 app.use('/filters', filtersRouter);
+app.use('/notifications', notificationsRouter);
 
 
 

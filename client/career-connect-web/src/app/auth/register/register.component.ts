@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { passwordMatchValidator } from './passwordMatch.validator';
-import { ISampleLists, RegisterService } from './register.service';
+import { RegisterService } from './register.service';
 import { Auth, createUserWithEmailAndPassword } from '@angular/fire/auth';
 import { MatStepper } from '@angular/material/stepper';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -11,6 +11,8 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { slugify } from 'src/app/shared/slugify';
 import { deslugify } from 'src/app/shared/deslugify';
 import { Router } from '@angular/router';
+import { ISampleLists } from 'src/app/shared/SampleLists.interface';
+import { FiltersService } from 'src/app/shared/http/filters.service';
 
 @Component({
   selector: 'app-register',
@@ -66,7 +68,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
   categoryInputSubscription! : Subscription
 
   ngOnInit(): void {
-    this.registerService.getSampleLists().subscribe((res) => {
+    this.filtersService.getSampleLists().subscribe((res) => {
       this.sampleLists = res;
       this.filteredCategories = this.sampleLists.categories;
       this.filteredSkills = this.sampleLists.skills;
@@ -87,7 +89,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
                 return  false;
               }),
               distinctUntilChanged(),
-              switchMap((query) => this.registerService.getEducationFilters(query))
+              switchMap((query) => this.filtersService.getEducationFilters(query))
             ).subscribe((res) => this.filteredEducations = res);
            }, 100)
 
@@ -102,13 +104,15 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
     private _formBuilder: FormBuilder,
     private registerService: RegisterService,
     private auth: Auth,
-    private router: Router
+    private router: Router,
+    private filtersService: FiltersService 
   ) {}
   ngOnDestroy(): void {
     this.skillInputSubscription?.unsubscribe();
     this.educationInputSubscription?.unsubscribe();
     this.categoryInputSubscription?.unsubscribe();
   }
+
   ngAfterViewInit(): void {
    this.categoryInputSubscription =  fromEvent<Event>(this.categoryInput.nativeElement, 'input')
     .pipe(
@@ -120,7 +124,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
         return  false;
       }),
       distinctUntilChanged(),
-      switchMap((query) => this.registerService.getCategoryFilters(query))
+      switchMap((query) => this.filtersService.getCategoryFilters(query))
     ).subscribe((res) => this.filteredCategories = res);
 
    this.skillInputSubscription = fromEvent<Event>(this.skillsInput.nativeElement, 'input')
@@ -133,7 +137,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
         return  false;
       }),
       distinctUntilChanged(),
-      switchMap((query) => this.registerService.getSkillsFilters(query))
+      switchMap((query) => this.filtersService.getSkillsFilters(query))
     ).subscribe((res) => this.filteredSkills = res);
 
   }
@@ -200,7 +204,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
   
 
   removedSkill(skill: string) {
-    const index = this.categoriesSelected.indexOf(skill);
+    const index = this.skillsSelected.indexOf(skill);
     this.skillsSelected.splice(index, 1);
     this.jobPreferenceFormGroup.controls['skills'].setValue(this.skillsSelected);
   }
