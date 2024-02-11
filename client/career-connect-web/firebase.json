@@ -1,9 +1,0 @@
-{
-  "hosting": [
-    {
-      "target": "career-connect-web",
-      "source": ".",
-      "frameworksBackend": {}
-    }
-  ]
-}
