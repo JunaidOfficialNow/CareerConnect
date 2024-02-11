@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError, of } from 'rxjs';
 import { ISampleLists } from 'src/app/shared/SampleLists.interface';
 import { environment } from 'src/environments/environment';
 
@@ -35,7 +36,12 @@ export class RegisterService {
       email: userRequest.email,
       age: parseInt(userRequest.age),
       phoneNumber: userRequest.phoneNumber,
-    });
+    })
+    // .pipe(catchError((err, caugth) => {
+    //   console.log(err, caugth)
+
+    //   return of(null);
+    // }));
   }
 
 

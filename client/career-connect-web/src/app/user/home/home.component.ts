@@ -1,16 +1,20 @@
-import {Component} from '@angular/core';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import {Component, OnInit, inject} from '@angular/core';
+import { HomeService, JobNotificationDoc } from './home.service';
+
 
 
 @Component({
   selector: 'app-home',
-  standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  homeService = inject(HomeService);
+
+  jobNotifications: JobNotificationDoc[] = [];
+
+  ngOnInit(): void {
+    this.homeService.getJobNotifications().subscribe((res) => this.jobNotifications = res);
+  }
 
 }

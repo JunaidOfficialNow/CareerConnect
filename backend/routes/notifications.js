@@ -50,5 +50,15 @@ router.post('/', async  (req, res, next) => {
   }
 })
 
+router.get('/', async (req, res, next) => {
+  try {
+    const results = await JobNotificationModel.find();
+    res.json(results);
+  } catch (error) {
+    logger.error(error.message, error);
+    next(error);
+  }
+})
+
 
 module.exports =  router;

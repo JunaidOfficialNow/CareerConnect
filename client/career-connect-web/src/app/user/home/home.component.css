@@ -1,0 +1,22 @@
+.header {
+  height: 80vh;
+  display: flex!important;
+  flex-direction: column !important;
+  justify-content: center;
+  align-items: center;
+  background-color: #3f51b5;
+}
+.font-fam {
+  font-family: Roboto, sans-serif !important;
+
+}
+
+.heading {
+  font-size: 56px;
+  font-weight: 700;
+}
+
+
+::ng-deep .mdc-notched-outline__notch {
+  border-right: none !important;
+}

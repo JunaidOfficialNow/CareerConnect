@@ -25,6 +25,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { DeslugifyPipeModule } from '../shared/deslugify.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthGuard, hasCustomClaim } from '@angular/fire/auth-guard';
+import { map, pipe } from 'rxjs';
+
+const redirectNonAdminTo = pipe(hasCustomClaim('admin'), map(isAdmin => isAdmin ))
 
 
 
@@ -52,6 +56,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
       {
         path: 'admin',
         component: LayoutComponent,
+        canActivate: [AuthGuard],
         children: [
           {
             path: 'dashboard',
