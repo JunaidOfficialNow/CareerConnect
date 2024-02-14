@@ -60,7 +60,9 @@ router.get('/all', async (req, res, next) => {
 });
 
 router.get('/', async (req, res, next) => {
-  let {page, limit, query} = req.query;
+  let {page, limit, query, order} = req.query;
+  let sortOrder = -1;
+  if (order === 'asc') sortOrder = 1;
   if (!page) page = 1;
   if  (!limit) limit = 10;
   if (isNaN(page) || page < 1) {
@@ -103,7 +105,7 @@ router.get('/', async (req, res, next) => {
       },
       {
         $sort: {
-          createdAt: -1,
+          createdAt: sortOrder,
         },
       },
       {
