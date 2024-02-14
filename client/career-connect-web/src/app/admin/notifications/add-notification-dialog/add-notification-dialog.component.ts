@@ -21,8 +21,9 @@ import { ISampleLists } from 'src/app/shared/SampleLists.interface';
 import { FiltersService } from 'src/app/shared/http/filters.service';
 import { deslugify } from 'src/app/shared/deslugify';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { JobNotificationDto } from '../JobNotification.interface';
+import { JobNotificationDoc } from 'src/app/shared/jobNotification.interface';
 
 @Component({
   selector: 'app-form',
@@ -36,9 +37,10 @@ export class AddNotificationDialogComponent
   private filtersService = inject(FiltersService);
   private snackbarService = inject(SnackbarService);
   private dialog = inject(MatDialogRef<AddNotificationDialogComponent, JobNotificationDto>);
+   data : JobNotificationDoc = inject(MAT_DIALOG_DATA);
 
-  addOfficialLink = false;
-  addWebsiteLink = false;
+  addOfficialLink = this.data?.officialLink ?  true : false;
+  addWebsiteLink = this.data?.websiteLink ? true : false;
 
   qualifications = [
     'High School',
@@ -49,8 +51,8 @@ export class AddNotificationDialogComponent
   ];
 
   sampleLists: ISampleLists = {} as ISampleLists;
-  skillsSelected: string[] = [];
-  educationsSelected: string[] = [];
+  skillsSelected: string[] = this.data?.skills ||  [];
+  educationsSelected: string[] = this.data?.educations || [];
 
   filteredCategories: { category: string }[] = [];
   filteredSkills: { skill: string }[] = [];
@@ -65,20 +67,20 @@ export class AddNotificationDialogComponent
   categoryInputSubscription!: Subscription;
 
   jobNotificationFormGroup = this.fb.group({
-    jobTitle: ['', Validators.required],
-    CompanyOrDept: ['', Validators.required],
-    description: ['', Validators.required],
-    location: ['', Validators.required],
-    category: ['', Validators.required],
-    educations: [[] as string[]],
-    skills: [[] as string[], Validators.required],
-    deadline: ['', Validators.required],
-    jobType: ['OnSiteJob', Validators.required],
-    govtOrNot: ['govtJob', Validators.required],
-    applicationLink: ['', Validators.required],
-    officialLink: [''],
-    websiteLink: [''],
-    minQualification: ['', Validators.required],
+    jobTitle: [this.data?.jobTitle || '', Validators.required],
+    CompanyOrDept: [this.data?.CompanyOrDept || '', Validators.required],
+    description: [this.data?.description || '', Validators.required],
+    location: [this.data?.location || '', Validators.required],
+    category: [this.data?.category || '', Validators.required],
+    educations: [ this.data?.educations || [] as string[]],
+    skills: [this.data?.skills || [] as string[], Validators.required],
+    deadline: [this.data?.deadline || '', Validators.required],
+    jobType: [ this.data?.jobType || 'OnSiteJob', Validators.required],
+    govtOrNot: [this.data?.govtOrNot || 'govtJob', Validators.required],
+    applicationLink: [this.data?.applicationLink || '', Validators.required],
+    officialLink: [this.data?.officialLink || ''],
+    websiteLink: [this.data?.websiteLink || ''],
+    minQualification: [this.data?.minQualification || '', Validators.required],
   });
 
   ngOnInit(): void {

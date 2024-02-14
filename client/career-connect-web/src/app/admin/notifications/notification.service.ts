@@ -24,6 +24,11 @@ export class JobNotificationService {
     .subscribe((results) => (this.count$.next(results.count), this.jobNotifications$.next(results.jobNotifications)))
    }
 
+   updateJobNotification(id: string, jobDoc: JobNotificationDto, page: number,  limit: number, query: string, order: string) {
+     return this.http.put<JobNotificationDoc>(environment.baseUrl + '/notifications', {id: id, updates: jobDoc}).
+     pipe(tap(() => this.getPaginatedResults(page, limit, query, order)));
+   }
+
    deleteJobNotification(id: string, page: number, limit: number, query: string, order: string) {
     return this.http.delete(environment.baseUrl + '/notifications/' + id).pipe(
       tap(() => this.getPaginatedResults(page, limit, query, order))

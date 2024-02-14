@@ -64,7 +64,7 @@ router.get('/', async (req, res, next) => {
   let sortOrder = -1;
   if (order === 'asc') sortOrder = 1;
   if (!page) page = 1;
-  if  (!limit) limit = 10;
+  if (!limit) limit = 10;
   if (isNaN(page) || page < 1) {
     return next(
       createHttpError.BadRequest(
@@ -89,16 +89,16 @@ router.get('/', async (req, res, next) => {
         $match: {
           $or: [
             {
-              jobTitle: {$regex: new RegExp(`^${slugify(query)}`, 'i')}
+              jobTitle: {$regex: new RegExp(`^${slugify(query)}`, 'i')},
             },
             {
-              CompanyOrDept: { $regex: new RegExp(`^${slugify(query)}`, 'i')}
+              CompanyOrDept: {$regex: new RegExp(`^${slugify(query)}`, 'i')},
             },
             {
-              location: { $regex: new RegExp(`^${slugify(query)}`, 'i')}
+              location: {$regex: new RegExp(`^${slugify(query)}`, 'i')},
             },
             {
-              category : { $regex: new RegExp(`^${slugify(query)}`, 'i')}
+              category: {$regex: new RegExp(`^${slugify(query)}`, 'i')},
             },
           ],
         },
@@ -138,16 +138,35 @@ router.get('/', async (req, res, next) => {
   }
 });
 
+router.put('/', async (req, res, next) => {
+  const {id, updates} = req.body;
+  try {
+    if (!id) throw new createHttpError.BadRequest('id required');
+    if (!updates) {
+      throw new createHttpError.BadRequest('updates object required');
+    }
+    const result = await JobNotificationModel.findByIdAndUpdate(id, updates);
+    logger.info('updated job notification ' + id)
+    if (res) return res.json(result);
+    throw new createHttpError.NotFound('entity not found');
+  } catch (error) {
+    logger.error(error.message , error);
+    next(error);
+  }
+});
+
 router.delete('/:jobNotificationId', async (req, res, next) => {
   const {jobNotificationId} = req.params;
   try {
-    const result = await JobNotificationModel.findByIdAndDelete(jobNotificationId);
+    const result = await JobNotificationModel.findByIdAndDelete(
+      jobNotificationId
+    );
     if (result) return res.status(204).end();
     throw new createHttpError.NotFound('entity not found');
   } catch (error) {
     logger.error(error.message, error);
     next(error);
   }
-})
+});
 
 module.exports = router;

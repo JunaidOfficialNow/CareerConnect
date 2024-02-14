@@ -75,7 +75,7 @@ export class NotificationsComponent {
               1,
               this.paginator.pageSize,
               query,
-              this.sort.direction
+              this.sort?.direction
             )
           )
         )
@@ -103,7 +103,7 @@ export class NotificationsComponent {
       1,
       10,
       '',
-      this.sort.direction
+      ''
     );
   }
 
@@ -113,7 +113,7 @@ export class NotificationsComponent {
       1,
       10,
       '',
-      this.sort.direction
+      this.sort?.direction
     );
   }
 
@@ -148,6 +148,31 @@ export class NotificationsComponent {
       });
   }
 
+  openEditJobNotification(id: string) {
+    const jobDoc = this.jobNotificationService.jobNotifications$.value.find(doc => doc._id === id);
+    this.dialog
+    .open<AddNotificationDialogComponent, JobNotificationDoc, JobNotificationDto>(
+      AddNotificationDialogComponent,
+      { disableClose: true, data: jobDoc}
+    )
+    .afterClosed()
+    .subscribe((res) => {
+      if (res) {
+        this.jobNotificationService
+          .updateJobNotification(
+            id,
+            res,
+            this.paginator.pageIndex + 1,
+            this.paginator.pageSize,
+            this.searchInput.nativeElement.value,
+            this.sort.direction
+          )
+          .subscribe();
+      }
+    });
+
+  }
+
   deleteJobNotification(id: string) {
     this.jobNotificationService
       .deleteJobNotification(
@@ -155,7 +180,7 @@ export class NotificationsComponent {
         this.paginator.pageIndex + 1,
         this.paginator.pageSize,
         this.searchInput.nativeElement.value,
-        this.sort.direction
+        this.sort?.direction
       )
       .subscribe();
   }

@@ -14,6 +14,8 @@
       Notification</button>
   </div>
 
+  <div class="info w-full text-center italic text-gray-400 mb-1">Click any row  for detailed view, also click createdAt header for enabling sorting</div>
+
 
   <div>
     <table mat-table [dataSource]="dataSource$" multiTemplateDataRows (matSortChange)="handleSortChange($event)" matSort class="mat-elevation-z8">
@@ -43,7 +45,7 @@
 
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element"> <button mat-icon-button> <mat-icon>edit</mat-icon></button> <button
+        <td mat-cell *matCellDef="let element"> <button mat-icon-button (click)="openEditJobNotification(element._id)"> <mat-icon>edit</mat-icon></button> <button
             mat-icon-button (click)="deleteJobNotification(element._id)"><mat-icon>delete</mat-icon></button> </td>
       </ng-container>
 

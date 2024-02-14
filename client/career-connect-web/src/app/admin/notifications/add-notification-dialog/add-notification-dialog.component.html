@@ -1,5 +1,12 @@
 
-<h2 mat-dialog-title>Create new Job notification</h2>
+<h2 mat-dialog-title>
+  @if (data == undefined) {
+    Create new Job notification
+  } @else {
+    Edit job notification
+  }
+  
+</h2>
 <form [formGroup]="jobNotificationFormGroup" novalidate (ngSubmit)="onSubmit()">
 <mat-dialog-content class="mat-typography">
     <mat-card class="shipping-card">
@@ -165,6 +172,7 @@
      
 
   
+        <div class="my-2 text-black italic ">Select Job type</div>
         <div class="row">
             <mat-radio-group formControlName="jobType">
               <mat-radio-button color="primary" value="OnSiteJob">On-site</mat-radio-button>
@@ -176,6 +184,7 @@
             </mat-radio-group>
         </div>
   
+        <div class="claa my-2 text-black italic">Select whether govt job or not</div>
         <div class="row">
           <mat-radio-group class="full-width" formControlName="govtOrNot">
             <mat-radio-button color="primary" value="govtJob">Govt</mat-radio-button>
