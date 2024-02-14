@@ -22,7 +22,7 @@ import { FiltersService } from 'src/app/shared/http/filters.service';
 import { deslugify } from 'src/app/shared/deslugify';
 import { SnackbarService } from 'src/app/shared/snackbar.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { JobNotification } from '../JobNotification.interface';
+import { JobNotificationDto } from '../JobNotification.interface';
 
 @Component({
   selector: 'app-form',
@@ -35,7 +35,7 @@ export class AddNotificationDialogComponent
   private fb = inject(FormBuilder);
   private filtersService = inject(FiltersService);
   private snackbarService = inject(SnackbarService);
-  private dialog = inject(MatDialogRef<AddNotificationDialogComponent, JobNotification>);
+  private dialog = inject(MatDialogRef<AddNotificationDialogComponent, JobNotificationDto>);
 
   addOfficialLink = false;
   addWebsiteLink = false;

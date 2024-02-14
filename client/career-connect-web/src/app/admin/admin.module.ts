@@ -27,7 +27,11 @@ import { DeslugifyPipeModule } from '../shared/deslugify.pipe';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AuthGuard, hasCustomClaim } from '@angular/fire/auth-guard';
 import { map, pipe } from 'rxjs';
-
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort'
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormatedDescriptionPipeModule } from '../shared/formatedDescription.pipe';
+ 
 const redirectNonAdminTo = pipe(hasCustomClaim('admin'), map(isAdmin => isAdmin ))
 
 
@@ -45,12 +49,16 @@ const redirectNonAdminTo = pipe(hasCustomClaim('admin'), map(isAdmin => isAdmin 
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
+    MatSortModule,
+    MatPaginatorModule,
     MatTableModule,
+    MatFormFieldModule,
     MatDialogModule,
     MatChipsModule,
     MatNativeDateModule,
     MatDatepickerModule,
     DeslugifyPipeModule,
+    FormatedDescriptionPipeModule,
     MatAutocompleteModule,
     RouterModule.forChild([
       {

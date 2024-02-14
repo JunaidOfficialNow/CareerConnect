@@ -15,97 +15,97 @@
 
 <div class="jobs px-40 mt-10 flex flex-col gap-4">
 
-      <mat-form-field appearance="outline" class="example-full-width">
-        <mat-label>Search jobs</mat-label>
-        <input matInput placeholder="Software developer">
-      </mat-form-field>
+  <mat-form-field appearance="outline" class="example-full-width">
+    <mat-label>Search jobs</mat-label>
+    <input matInput placeholder="Software developer">
+  </mat-form-field>
 
 
 
-      @for (job of jobNotifications; track job) {
-        <mat-card class="example-card">
-          <mat-card-header>
-            <mat-card-title>{{job.jobTitle}}</mat-card-title>
-            <mat-card-subtitle>{{job.CompanyOrDept}} | {{job.location}} </mat-card-subtitle>
-          </mat-card-header>
-          <mat-card-content>
-  
-        <br>
-             <h3>About this  job</h3>
-            <p class="text-gray-600">{{job.description}}</p>
-  
-        <div class="flex flex-col gap-1">
-          <div class="flex items-center justify-start gap-2">
-            <mat-icon>work_history_outlined</mat-icon> <span> 
-              @switch(job.jobType) {
-               @case('remoteJob') {
-                 Remote Work
-               }
+  @for (job of jobNotifications; track job) {
+  <mat-card class="example-card">
+    <mat-card-header>
+      <mat-card-title>{{job.jobTitle}}</mat-card-title>
+      <mat-card-subtitle>{{job.CompanyOrDept}} | {{job.location}} </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
 
-               @case('OnSiteJob') {
-                 On-site Job
-               }
-               
-               @case('HybridJob') {
-                 Hybrid Job
-               }
+      <br>
+      <h3>About this job</h3>
+      <p class="text-gray-600">{{job.description}}</p>
 
-              }
-             </span>
-          </div>
+      <div class="flex flex-col gap-1">
+        <div class="flex items-center justify-start gap-2">
+          <mat-icon>work_history_outlined</mat-icon> <span>
+            @switch(job.jobType) {
+            @case('remoteJob') {
+            Remote Work
+            }
 
-        <div class="w-36 flex justify-start items-center gap-2">
-          <mat-icon>account_balance_outlined</mat-icon> <span>
-            @if (job.govtOrNot === 'govt') {
-              Government
-            } @else {
-              Non-Government
+            @case('OnSiteJob') {
+            On-site Job
+            }
+
+            @case('HybridJob') {
+            Hybrid Job
+            }
+
             }
           </span>
         </div>
 
-          
-<div class="flex justify-start items-center gap-2">
-@if(job.minQualification === 'Graduation' || job.minQualification === 'Post Graduation') {
+        <div class="w-36 flex justify-start items-center gap-2">
+          <mat-icon>account_balance_outlined</mat-icon> <span>
+            @if (job.govtOrNot === 'govt') {
+            Government
+            } @else {
+            Non-Government
+            }
+          </span>
+        </div>
 
-<mat-icon>school_outlined</mat-icon> @for (education of job.educations; track education) {
-  {{education | deslugify}},
-}
-} @else {
-<mat-icon>school_outlined</mat-icon> {{job.minQualification}}
-}
+
+        <div class="flex justify-start items-center gap-2">
+          @if(job.minQualification === 'Graduation' || job.minQualification === 'Post Graduation') {
+
+          <mat-icon>school_outlined</mat-icon> @for (education of job.educations; track education) {
+          {{education | deslugify}},
+          }
+          } @else {
+          <mat-icon>school_outlined</mat-icon> {{job.minQualification}}
+          }
 
 
-</div>
+        </div>
 
-       <div class="flex items-center justify-start gap-2">
-        <mat-icon class="ml-1">engineering</mat-icon>  @for (skill of job.skills; track skill) {
+        <div class="flex items-center justify-start gap-2">
+          <mat-icon class="ml-1">engineering</mat-icon> @for (skill of job.skills; track skill) {
           {{skill | deslugify}},
-        }
-       </div>
+          }
+        </div>
 
 
         <div class="flex justify-start items-center gap-2">
 
-          <mat-icon>timer</mat-icon>  {{job.deadline | date}}<br>
+          <mat-icon>timer</mat-icon> {{job.deadline | date}}<br>
         </div>
 
-        </div>
-     
-            <small><span class="text-gray-400 font-light">2 months ago</span> . Over 100 interactions</small>
-  
-          </mat-card-content>
-          <mat-card-actions class="flex gap-3" align='start'>
-            <a href="https://{{job.applicationLink}}" target="_blank" mat-raised-button color="primary">Apply</a>
-            @if (job.officialLink) {
-              <a href="https://{{job.officialLink}}" target="_blank" mat-raised-button color="primary">Official Notification</a>
-            }
-            @if (job.websiteLink) {
-              <a href="https://{{job.websiteLink}}" target="_blank" mat-raised-button color="primary">Official Website</a>
-            }
-          </mat-card-actions>
-        </mat-card>
-  
+      </div>
+
+      <small><span class="text-gray-400 font-light">2 months ago</span> . Over 100 interactions</small>
+
+    </mat-card-content>
+    <mat-card-actions class="flex gap-3" align='start'>
+      <a href="https://{{job.applicationLink}}" target="_blank" mat-raised-button color="primary">Apply</a>
+      @if (job.officialLink) {
+      <a href="https://{{job.officialLink}}" target="_blank" mat-raised-button color="primary">Official Notification</a>
       }
-  
-    </div>
+      @if (job.websiteLink) {
+      <a href="https://{{job.websiteLink}}" target="_blank" mat-raised-button color="primary">Official Website</a>
+      }
+    </mat-card-actions>
+  </mat-card>
+
+  }
+
+</div>

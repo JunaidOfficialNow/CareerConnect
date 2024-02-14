@@ -20,7 +20,6 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .example-element-detail {
   overflow: hidden;
-  display: flex;
 }
 
 .example-element-diagram {
@@ -44,4 +43,21 @@ tr.example-element-row:not(.example-expanded-row):active {
 
 .example-element-description-attribution {
   opacity: 0.5;
+}
+
+
+
+.mat-column-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 5rem;
+
+}
+
+
+
+.height {
+  height: 3.3rem !important;
+  margin-bottom: 1.1rem
 }

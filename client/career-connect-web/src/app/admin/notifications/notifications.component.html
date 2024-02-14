@@ -1,59 +1,190 @@
-<div class="button flex justify-end my-4 pe-8">
-  <button mat-raised-button color="primary" (click)="OpenAddNewNotificationDialog()">New Notification</button>
-</div>
+<div class=" "
+  [ngClass]="{ 'remove-padding': (jobNotificationsCount$ | async) !== 0, ' add-padding pt-32': (jobNotificationsCount$ | async) === 0}">
+
+  <div class="button flex gap-2 items-center">
+    <mat-form-field appearance="fill" class="flex-grow">
+      <mat-label>Search</mat-label>
+      <input matInput #searchInput placeholder="Search category, location, title, company or dept">
+      @if (searchInput.value !== '') {
+      <mat-icon class="hover:cursor-pointer" matSuffix (click)="(clearFilter())">close</mat-icon>
+      }
+    </mat-form-field>
+
+    <button (click)="OpenAddNewNotificationDialog()" class="height" mat-raised-button color="primary">Add
+      Notification</button>
+  </div>
 
 
-<div>
-  <table mat-table
-       [dataSource]="dataSource" multiTemplateDataRows
-       class="mat-elevation-z8">
-  @for (column of columnsToDisplay; track column) {
-    <ng-container matColumnDef="{{column}}">
-      <th mat-header-cell *matHeaderCellDef> {{column}} </th>
-      <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-    </ng-container>
-  }
-  <ng-container matColumnDef="expand">
-    <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
-        @if (expandedElement === element) {
-          <mat-icon>keyboard_arrow_up</mat-icon>
-        } @else {
-          <mat-icon>keyboard_arrow_down</mat-icon>
-        }
-      </button>
-    </td>
-  </ng-container>
+  <div>
+    <table mat-table [dataSource]="dataSource$" multiTemplateDataRows (matSortChange)="handleSortChange($event)" matSort class="mat-elevation-z8">
 
-  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-  <ng-container matColumnDef="expandedDetail">
-    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
-      <div class="example-element-detail"
-           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-        <div class="example-element-diagram">
-          <div class="example-element-position"> {{element.position}} </div>
-          <div class="example-element-symbol"> {{element.symbol}} </div>
-          <div class="example-element-name"> {{element.name}} </div>
-          <div class="example-element-weight"> {{element.weight}} </div>
-        </div>
-        <div class="example-element-description">
-          {{element.description}}
-          <span class="example-element-description-attribution"> -- Wikipedia </span>
-        </div>
-      </div>
-    </td>
-  </ng-container>
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef> Title </th>
+        <td mat-cell *matCellDef="let element"> {{element.jobTitle}} </td>
+      </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
-  <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;"
-      class="example-element-row"
-      [class.example-expanded-row]="expandedElement === element"
-      (click)="expandedElement = expandedElement === element ? null : element">
-  </tr>
-  <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-</table>
+      <ng-container matColumnDef="company/dept">
+        <th mat-header-cell *matHeaderCellDef> Company/Dept </th>
+        <td mat-cell *matCellDef="let element"> {{element.CompanyOrDept}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="location">
+        <th mat-header-cell *matHeaderCellDef> Location </th>
+        <td mat-cell *matCellDef="let element"> {{element.location}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef> Category </th>
+        <td mat-cell *matCellDef="let element"> {{element.category | deslugify}} </td>
+      </ng-container>
 
 
-</div>
 
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element"> <button mat-icon-button> <mat-icon>edit</mat-icon></button> <button
+            mat-icon-button (click)="deleteJobNotification(element._id)"><mat-icon>delete</mat-icon></button> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="createdAt" >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Created At</th>
+        <td mat-cell *matCellDef="let element"> {{element.createdAt | date}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="label">
+        <th mat-header-cell *matHeaderCellDef> Status</th>
+        <td mat-cell *matCellDef="let element"> 
+          @if (isExpired(element.deadline)) {
+            <div class="w-20 text-center italic bg-red-400/15 border border-red-600 rounded-full">Expired</div>
+          } @else {
+            <div class="w-20 text-center italic bg-green-400/15 border-green-600 border rounded-full">Active</div>
+          }
+         </td>
+      </ng-container>
+
+      <ng-container matColumnDef="deadline">
+        <th mat-header-cell *matHeaderCellDef> Deadline </th>
+        <td mat-cell *matCellDef="let element"> {{element.deadline | date}}  
+        </td>
+      </ng-container>
+
+
+
+
+
+      <ng-container matColumnDef="expand">
+        <th mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button aria-label="expand row"
+            (click)="(expandedElement = expandedElement === element ? null : element); $event.stopPropagation()">
+            @if (expandedElement === element) {
+            <mat-icon>keyboard_arrow_up</mat-icon>
+            } @else {
+            <mat-icon>keyboard_arrow_down</mat-icon>
+            }
+          </button>
+        </td>
+      </ng-container>
+
+      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+      <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplayWithExpand.length">
+          <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+            <span class=" example-element-description font-thin text-sm text-gray-600">About this job</span>
+            <div [innerHTML]="element.description | formatedDescription" class="example-element-description">
+            </div>
+            <div class="details example-element-description ">
+
+              <div class="flex flex-col gap-1">
+                <div class="flex items-center justify-start gap-2">
+                  <mat-icon class="material-symbols-outlined">work_history_outlined</mat-icon> 
+                  <span class="italic">Job type:</span>
+                  <span>
+                    @switch(element.jobType) {
+                    @case('remoteJob') {
+                    Remote Work
+                    }
+        
+                    @case('OnSiteJob') {
+                    On-site Job
+                    }
+        
+                    @case('HybridJob') {
+                    Hybrid Job
+                    }
+        
+                    }
+                  </span>
+                </div>
+        
+                <div class=" flex justify-start items-center gap-2">
+                  <mat-icon class="material-symbols-outlined">account_balance_outlined</mat-icon> 
+                  <span class="italic">Government or not:</span>
+                  <span>
+                    @if (element.govtOrNot === 'govt') {
+                    Government
+                    } @else {
+                    Non-Government
+                    }
+                  </span>
+                </div>
+        
+        
+                <div class="flex justify-start items-center gap-2">
+
+                  <mat-icon class="material-symbols-outlined">school_outlined</mat-icon> 
+                  <span class="italic">minimum qualification required:</span>
+                  {{element.minQualification}}
+                  
+        
+
+                </div>
+
+                <div class="flex justify-start items-center gap-2">
+                  @if(element.minQualification === 'Graduation' || element.minQualification === 'Post Graduation') {
+                  <mat-icon class="material-symbols-outlined">school_outlined</mat-icon>
+                  <span class="italic">Educations considered: </span>
+                   @for (education of element.educations; track education) {
+                  {{education | deslugify}},
+                  }
+                  }        
+                </div>
+        
+                <div class="flex items-center justify-start gap-2">
+                  <mat-icon class="material-symbols-outlined" >manufacturing</mat-icon>
+                  <span class="italic">skills required: </span>
+                   @for (skill of element.skills; track skill) {
+                  {{skill | deslugify}},
+                  }
+                </div>
+      
+              </div>
+
+
+            </div>
+
+          </div>
+        </td>
+      </ng-container>
+
+
+
+      <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+      <tr mat-row *matRowDef="let element; columns: columnsToDisplayWithExpand;" class="example-element-row"
+        [class.example-expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+      <ng-container *matNoDataRow mat-row>
+        <div class=" no-data-row mat-cell w-full"  colspan="12"><span class="text-gray-400 ">Add a new job notification!</span></div>
+      </ng-container>
+    </table>
+
+    <mat-paginator [length]="jobNotificationsCount$ | async" (page)="handlePageEvent($event)"
+      [pageSizeOptions]="[10, 25, 50,100]" aria-label="Select page of skills"></mat-paginator>
+
+
+  </div>

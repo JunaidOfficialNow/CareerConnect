@@ -1,5 +1,6 @@
 import {Component, OnInit, inject} from '@angular/core';
-import { HomeService, JobNotificationDoc } from './home.service';
+import { HomeService } from './home.service';
+import { JobNotificationDoc } from 'src/app/shared/jobNotification.interface';
 
 
 

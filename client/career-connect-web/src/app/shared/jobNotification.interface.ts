@@ -1,4 +1,5 @@
-export interface JobNotificationDto {
+export interface JobNotificationDoc {
+  _id: string;
   jobTitle: string;
   CompanyOrDept: string;
   description: string;
