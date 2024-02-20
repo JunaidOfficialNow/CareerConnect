@@ -69,11 +69,14 @@ mt-10
 
       <br>
       <h3>About this job</h3>
-      <p class="text-gray-600">{{job.description}}</p>
+      <div [innerHTML]="job.description | formatedDescription" class="example-element-description"></div>
+       
 
       <div class="flex flex-col gap-1">
         <div class="flex items-center justify-start gap-2">
-          <mat-icon>work_history_outlined</mat-icon> <span>
+          <mat-icon class="material-symbols-outlined">work_history_outlined</mat-icon> 
+          <span class="italic">Job type:</span>
+          <span>
             @switch(job.jobType) {
             @case('remoteJob') {
             Remote Work
@@ -91,8 +94,10 @@ mt-10
           </span>
         </div>
 
-        <div class="w-36 flex justify-start items-center gap-2">
-          <mat-icon>account_balance_outlined</mat-icon> <span>
+        <div class=" flex justify-start items-center gap-2">
+          <mat-icon class="material-symbols-outlined">account_balance_outlined</mat-icon> 
+          <span class="italic">Government or not:</span>
+          <span>
             @if (job.govtOrNot === 'govt') {
             Government
             } @else {
@@ -103,33 +108,42 @@ mt-10
 
 
         <div class="flex justify-start items-center gap-2">
-          @if(job.minQualification === 'Graduation' || job.minQualification === 'Post Graduation') {
 
-          <mat-icon>school_outlined</mat-icon> @for (education of job.educations; track education) {
-          {{education | deslugify}},
-          }
-          } @else {
-          <mat-icon>school_outlined</mat-icon> {{job.minQualification}}
-          }
+          <mat-icon class="material-symbols-outlined">school_outlined</mat-icon> 
+          <span class="italic">minimum qualification required:</span>
+          {{job.minQualification}}
+          
 
 
         </div>
 
+        <div class="flex justify-start items-center gap-2">
+          @if(job.minQualification === 'Graduation' || job.minQualification === 'Post Graduation') {
+          <mat-icon class="material-symbols-outlined">school_outlined</mat-icon>
+          <span class="italic">Educations considered: </span>
+           @for (education of job.educations; track education) {
+          {{education | deslugify}},
+          }
+          }        
+        </div>
+
         <div class="flex items-center justify-start gap-2">
-          <mat-icon class="ml-1">engineering</mat-icon> @for (skill of job.skills; track skill) {
+          <mat-icon class="material-symbols-outlined" >manufacturing</mat-icon>
+          <span class="italic">skills required: </span>
+           @for (skill of job.skills; track skill) {
           {{skill | deslugify}},
           }
         </div>
 
+            
+      <div class="flex justify-start items-center gap-2">
 
-        <div class="flex justify-start items-center gap-2">
-
-          <mat-icon>timer</mat-icon> {{job.deadline | date}}<br>
-        </div>
+        <mat-icon class="material-symbols-outlined">timer</mat-icon> {{job.deadline | date}}<br>
+      </div>
 
       </div>
 
-      <small><span class="text-gray-400 font-light">2 months ago</span> . Over 100 interactions</small>
+      <small><span class="text-gray-400 font-light">{{job.createdAt | RelativeTime}}</span> . Over 100 interactions</small>
 
     </mat-card-content>
     <mat-card-actions class="flex gap-3" align='start'>

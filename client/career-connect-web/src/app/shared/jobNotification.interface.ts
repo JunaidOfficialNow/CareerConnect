@@ -14,4 +14,5 @@ export interface JobNotificationDoc {
   officialLink: string;
   websiteLink: string;
   minQualification: string;
+  createdAt: string;
 }

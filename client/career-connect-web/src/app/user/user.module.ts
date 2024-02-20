@@ -21,6 +21,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { FormatedDescriptionPipeModule } from '../shared/formatedDescription.pipe';
+import { RelativePipeModule } from '../shared/getRelativeTime.pipe';
 
 @NgModule({
   declarations: [
@@ -42,9 +44,11 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     MatDialogModule,
     DeslugifyPipeModule,
     MatSidenavModule,
+    FormatedDescriptionPipeModule,
     MatAutocompleteModule,
     MatChipsModule,
     MatCheckboxModule,
+    RelativePipeModule,
     MatSelectModule,
     RouterModule.forChild([
       {

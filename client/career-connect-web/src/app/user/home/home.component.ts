@@ -69,6 +69,8 @@ export class HomeComponent implements OnInit {
     this.searchControl.setValue('');
   }
 
+  
+
   openEditProfileDialog() {
     this.dialog
       .open<EditProfileComponent, EditProfileUserData, UserDto>(
