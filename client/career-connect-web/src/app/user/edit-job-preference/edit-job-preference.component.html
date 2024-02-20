@@ -1,1 +1,136 @@
-<p>edit-job-preference works!</p>
+<h2 mat-dialog-title>Update job preferences</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="jobPreferenceFormGroup" class="w-[30vw]">
+
+
+
+        <div class="row">
+          <div class="col justify-center flex">
+            <mat-form-field class="full-width">
+              <mat-label>Highest Education</mat-label>
+              <mat-select #highestEducation name="highestEducation" formControlName="highestEducation" required>
+                <mat-option>--</mat-option>
+                @for (qualification of qualifications; track qualification) {
+                <mat-option [value]="qualification">{{qualification}}</mat-option>
+                }
+              </mat-select>
+              @if (jobPreferenceFormGroup.controls['highestEducation'].hasError('required')) {
+              <mat-error>Please choose an option</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+
+       @if (highestEducation.value === 'Graduation' || highestEducation.value  === 'Post Graduation') {
+        
+      
+        <div class="row">
+          <div class="col flex justify-center">              
+          <mat-form-field class="full-width">
+            <mat-label>Select your Course</mat-label>
+            <input #educationsInput
+                   type="text"
+                   placeholder="Select your course"
+                   matInput
+                   formControlName="course"
+                   [matAutocomplete]="autoEdu">
+            <mat-autocomplete requireSelection [displayWith]="displayFn" #autoEdu="matAutocomplete">
+              @for (education of filteredEducations; track education) {
+                <mat-option [value]="education.education">{{education.education | deslugify}}</mat-option>
+              }
+            </mat-autocomplete>
+
+            @if(jobPreferenceFormGroup.controls['course'].hasError('required')) {
+              <mat-error>Please select your course</mat-error>
+            }
+          </mat-form-field>
+        </div>
+        </div>
+      }
+
+
+
+
+
+
+        <div class="row">
+          <div class="col flex justify-center">
+          <mat-form-field class="full-width">
+            <mat-label>Skills you possess</mat-label>
+            <mat-chip-grid #chipGrid aria-label="skill selection">
+              @for(skill of skillsSelected; track skill) {
+                <mat-chip-row (removed)="removedSkill(skill)">
+                  {{skill | deslugify}}
+                  <button matChipRemove [attr.aria-label]="'remove ' + skill" >
+                    <mat-icon>cancel</mat-icon>
+                  </button>
+                </mat-chip-row>
+              }
+            </mat-chip-grid>
+            <input #skillsInput placeholder="Search for skills here" 
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matAutocomplete]="auto" #fruitInput
+             [matChipInputFor]="chipGrid"
+             (matChipInputTokenEnd)="addSkillFromInput($event)"
+              />
+            <mat-autocomplete (optionSelected)="selectedSkill($event)"  #auto="matAutocomplete">
+                @for (skill of filteredSkills; track skill) {
+                  <mat-option [value]="skill.skill">{{skill.skill | deslugify}}</mat-option>
+                }
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+      </div>
+
+      
+      <div class="row">
+        <div class="col flex justify-center">
+        <mat-form-field class="full-width">
+          <mat-label>Categories you prefer</mat-label>
+          <mat-chip-grid #chipGridA aria-label="Category selection">
+            @for(category of categoriesSelected; track category) {
+              <mat-chip-row (removed)="removedCategory(category)">
+                {{category | deslugify}}
+                <button matChipRemove [attr.aria-label]="'remove ' + category">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            }
+
+          </mat-chip-grid>
+          <input placeholder="Search for categories here" #categoryInput
+           [matAutocomplete]="autoCategory" [matChipInputFor]="chipGridA"
+            />
+          <mat-autocomplete requireSelection #autoCategory="matAutocomplete" (optionSelected)="selectedCategory($event)">
+              @for (category of filteredCategories; track category) {
+                <mat-option [value]="category.category">{{category.category | deslugify}}</mat-option>
+              }
+          </mat-autocomplete>
+          <mat-hint>{{categoriesSelected.length}}/5</mat-hint>
+        </mat-form-field>
+      </div>
+    </div>
+
+
+        <div class="w-full flex flex-col  items-center">
+          <h4 class="">Select your job  type preferences:</h4>
+          <div class="grid grid-cols-2 full-width">
+            <p><mat-checkbox color="primary" formControlName="remoteJob">Remote Work</mat-checkbox></p>
+            <p><mat-checkbox color="primary" formControlName="govtJob">Govt Job</mat-checkbox></p>
+            <p><mat-checkbox color="primary" formControlName="OnSiteJob">On-site job</mat-checkbox></p>
+            <p><mat-checkbox color="primary" formControlName="nonGovtJob">Non-govt Job</mat-checkbox></p>
+            <p><mat-checkbox color="primary" formControlName="HybridJob">Hybrid</mat-checkbox></p>
+           </div>
+        </div>
+
+
+
+        
+      </form>
+      
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="onJobPreferenceFormSubmit()" type="submit">Submit</button>
+
+</mat-dialog-actions>

@@ -2,14 +2,13 @@
   <span>CareerConnect</span>
   <button  class="flex gap-1" mat-button [matMenuTriggerFor]="menu">
     <mat-icon>person</mat-icon>
-    {{currUser.name}}
   </button>
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="openEditProfileDialog()">
       <mat-icon>dialpad</mat-icon>
       <span>Edit profile</span>
     </button>
-    <button mat-menu-item >
+    <button mat-menu-item (click)="onOpenUpdateJobPreferenceDialog()">
       <mat-icon>voicemail</mat-icon>
       <span>Edit job preferences</span>
     </button>

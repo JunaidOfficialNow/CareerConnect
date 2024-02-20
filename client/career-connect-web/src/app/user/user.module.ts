@@ -16,6 +16,11 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard'
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -37,6 +42,10 @@ import { AuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard'
     MatDialogModule,
     DeslugifyPipeModule,
     MatSidenavModule,
+    MatAutocompleteModule,
+    MatChipsModule,
+    MatCheckboxModule,
+    MatSelectModule,
     RouterModule.forChild([
       {
         path: 'home',

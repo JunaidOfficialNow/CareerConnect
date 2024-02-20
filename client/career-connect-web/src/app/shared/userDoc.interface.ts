@@ -7,7 +7,7 @@ export interface UserDoc {
   highestEducation: string;
   course?: string;
   skills: string[];
-  jobPreference? : {
+  jobPreferences? : {
     categoriesInterested: string[];
     remoteJob: boolean;
     OnSiteJob: boolean;

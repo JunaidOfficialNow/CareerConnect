@@ -38,7 +38,7 @@ router.put('/:id', async (req, res, next) => {
  }
 })
 
-router.post('/job-preferences/:userId', async (req, res, next) => {
+router.put('/job-preferences/:userId', async (req, res, next) => {
   const {
     highestEducation,
     course,

@@ -1,23 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, of } from 'rxjs';
-import { ISampleLists } from 'src/app/shared/SampleLists.interface';
 import { UserDto } from 'src/app/shared/UserDto.interface';
+import { UpdateJobPreferenceDTO } from 'src/app/shared/updateJobPreference.Dto.interface';
 import { environment } from 'src/environments/environment';
 
 
-
-export interface UpdateJobPreferenceDTO {
-   highestEducation: string;
-   course: string | null | undefined;
-   remoteJob: boolean,
-   OnSiteJob: boolean;
-   HybridJob: boolean;
-   govtJob: boolean;
-   nonGovtJob: boolean;
-   skills: string[];
-   categoriesInterested: string[];
-}
 
 
 @Injectable({
@@ -37,6 +24,6 @@ export class RegisterService {
 
 
   updateJobPreferences(userId: string, dto: UpdateJobPreferenceDTO) {
-    return this.http.post(environment.baseUrl + '/users/job-preferences/' + userId, dto )
+    return this.http.put(environment.baseUrl + '/users/job-preferences/' + userId, dto )
   }
 }
