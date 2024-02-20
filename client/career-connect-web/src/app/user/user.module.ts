@@ -8,29 +8,43 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatSidenavModule } from '@angular/material/sidenav'
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { DeslugifyPipeModule } from '../shared/deslugify.pipe';
-
-
+import { MatMenuModule } from '@angular/material/menu';
+import { EditJobPreferenceComponent } from './edit-job-preference/edit-job-preference.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard'
 
 @NgModule({
-  declarations: [HomeComponent],
+  declarations: [
+    HomeComponent,
+    EditJobPreferenceComponent,
+    EditProfileComponent,
+  ],
   imports: [
     CommonModule,
     MatToolbarModule,
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    FormsModule,
     MatIconModule,
+    MatMenuModule,
     MatCardModule,
+    ReactiveFormsModule,
+    MatDialogModule,
     DeslugifyPipeModule,
     MatSidenavModule,
     RouterModule.forChild([
       {
         path: 'home',
-        component:  HomeComponent
-      }
-    ])
-  ]
+        canActivate: [AuthGuard],
+        data: {authGuardPipe: () => redirectUnauthorizedTo('/auth')},
+        component: HomeComponent,
+      },
+    ]),
+  ],
 })
-export class UserModule { }
+export class UserModule {}

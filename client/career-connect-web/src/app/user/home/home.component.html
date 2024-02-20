@@ -1,6 +1,24 @@
 <mat-toolbar color="primary" class="mat-elevation-z6 fixed justify-between z-10">
   <span>CareerConnect</span>
-  <mat-icon>person</mat-icon>
+  <button  class="flex gap-1" mat-button [matMenuTriggerFor]="menu">
+    <mat-icon>person</mat-icon>
+    {{currUser.name}}
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="openEditProfileDialog()">
+      <mat-icon>dialpad</mat-icon>
+      <span>Edit profile</span>
+    </button>
+    <button mat-menu-item >
+      <mat-icon>voicemail</mat-icon>
+      <span>Edit job preferences</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>notifications_off</mat-icon>
+      <span>Logout</span>
+    </button>
+  </mat-menu>
+  
 </mat-toolbar>
 
 <div class="header mat-typography">
@@ -13,7 +31,9 @@
 
 
 
-<div class="jobs px-40 mt-10 flex flex-col gap-4">
+<div class="jobs px-40 
+mt-10
+ flex flex-col gap-4">
 
   <mat-form-field appearance="outline" class="example-full-width">
     <mat-label>Search jobs</mat-label>

@@ -1,0 +1,56 @@
+<h2 mat-dialog-title>Edit your profile</h2>
+<mat-dialog-content>
+
+  <form [formGroup]="basicDetailsFormGroup" class="w-[30vw]" >
+
+  
+  
+        <div class="row">
+          <div class="col flex justify-center">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Name" name="name" formControlName="name">
+              @if(basicDetailsFormGroup.controls['name'].hasError('required')){
+              <mat-error>Name is required</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+  
+  
+  
+        <div class="row">
+          <div class="col flex justify-center">
+            <mat-form-field class="full-width">
+              <input matInput #numberInput maxlength="10" type="number" placeholder="Number"
+                formControlName="phoneNumber">
+              @if(basicDetailsFormGroup.controls['phoneNumber'].hasError('required')){
+              <mat-error>Phone number is required</mat-error>
+              } @else if (basicDetailsFormGroup.controls['phoneNumber'].hasError('pattern') ){
+              <mat-error>Invalid phone number</mat-error>
+              }
+              <mat-hint>{{numberInput.value.length }}\10</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+  
+  
+        <div class="row">
+          <div class="col flex justify-center">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Age" name="age" type="number" formControlName="age">
+              @if(basicDetailsFormGroup.controls['age'].hasError('required')){
+              <mat-error>Age is required</mat-error>
+              }
+            </mat-form-field>
+          </div>
+        </div>
+  
+
+  </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button (click)="onBasicDetailsFormSubmit()" mat-raised-button color="primary" type="submit">Submit</button>
+</mat-dialog-actions>
+

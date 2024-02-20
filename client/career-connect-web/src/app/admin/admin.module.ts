@@ -88,7 +88,7 @@ const redirectNonAdminTo = pipe(hasCustomClaim('admin'), map(isAdmin => isAdmin 
           },
           {
             path: '',
-            redirectTo: 'dashboard',
+            redirectTo: 'notifications',
             pathMatch : 'full'
           },
         ]
