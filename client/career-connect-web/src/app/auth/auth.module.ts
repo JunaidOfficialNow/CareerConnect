@@ -52,6 +52,11 @@ import { DeslugifyPipe } from './register/deslugify.pipe';
         {
           path: 'register',
           component: RegisterComponent,
+        },
+        {
+          path: '',
+          redirectTo: 'login',
+          pathMatch: 'full'
         }
 
       ]

@@ -50,8 +50,25 @@ router.post('/', async (req, res, next) => {
 });
 
 router.get('/for-you', async (req, res, next) => {
+  let {query} =  req.query;
+  if (!query) query = '';
   try {
-    const results = await JobNotificationModel.find();
+    const results = await JobNotificationModel.find({
+      $or: [
+        {
+          jobTitle: {$regex: new RegExp(`^${slugify(query)}`, 'i')},
+        },
+        {
+          CompanyOrDept: {$regex: new RegExp(`^${slugify(query)}`, 'i')},
+        },
+        {
+          location: {$regex: new RegExp(`^${slugify(query)}`, 'i')},
+        },
+        {
+          category: {$regex: new RegExp(`^${slugify(query)}`, 'i')},
+        },
+      ],
+    });
     res.json(results);
   } catch (error) {
     logger.error(error.message, error);
@@ -137,6 +154,10 @@ router.get('/', async (req, res, next) => {
     next(error);
   }
 });
+
+
+
+
 
 router.put('/', async (req, res, next) => {
   const {id, updates} = req.body;

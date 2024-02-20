@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { HomeService } from './home.service';
 import { JobNotificationDoc } from 'src/app/shared/jobNotification.interface';
 import { MatDialog } from '@angular/material/dialog';
@@ -10,6 +10,11 @@ import { UserDoc } from 'src/app/shared/userDoc.interface';
 import { UserDto } from 'src/app/shared/UserDto.interface';
 import { EditJobPreferenceComponent } from '../edit-job-preference/edit-job-preference.component';
 import { UpdateJobPreferenceDTO } from 'src/app/shared/updateJobPreference.Dto.interface';
+import { Auth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { Observable, debounceTime, distinctUntilChanged, filter, map, startWith, switchMap, tap } from 'rxjs';
+import { FormControl } from '@angular/forms';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-home',
@@ -19,17 +24,49 @@ import { UpdateJobPreferenceDTO } from 'src/app/shared/updateJobPreference.Dto.i
 export class HomeComponent implements OnInit {
   homeService = inject(HomeService);
   dialog = inject(MatDialog);
+  auth = inject(Auth);
+  router = inject(Router);
+
 
   jobNotifications: JobNotificationDoc[] = [];
   currUser!: UserDoc;
+  name = ''
+
+
+  searchControl = new FormControl('');
+  options: string[] = []
+
+
+
 
   ngOnInit(): void {
+   this.searchControl.valueChanges.pipe(
+    startWith(''),
+    debounceTime(300),
+    distinctUntilChanged(),
+    tap((value) => {
+      if  (value === '') {
+       this.homeService.getJobNotifications().subscribe(res => this.jobNotifications = res);
+      }
+    }),
+    switchMap((query) => this.homeService.getSearchSuggestions(query!))
+  )
+  .subscribe((res) => (this.options = res));
+
     this.homeService
       .getJobNotifications()
       .subscribe((res) => (this.jobNotifications = res));
     this.homeService
       .getCurrentUserData()
-      .subscribe((res) => (this.currUser = res));
+      .subscribe((res) => (this.currUser = res, this.name = this.currUser.name));
+  }
+ 
+  onSelection(event: MatAutocompleteSelectedEvent) {
+    this.homeService.getJobNotifications(event.option.value).subscribe((res) => this.jobNotifications = res);
+  }
+
+  clearFilter() {
+    this.searchControl.setValue('');
   }
 
   openEditProfileDialog() {
@@ -73,5 +110,10 @@ export class HomeComponent implements OnInit {
         this.currUser.jobPreferences!.remoteJob = res?.remoteJob!;
         this.currUser.skills = res?.skills!;
       });
+  }
+
+  logout() {
+    this.auth.signOut()
+    .then(() => this.router.navigateByUrl('/auth'));
   }
 }
