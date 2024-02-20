@@ -49,7 +49,7 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-router.get('/all', async (req, res, next) => {
+router.get('/for-you', async (req, res, next) => {
   try {
     const results = await JobNotificationModel.find();
     res.json(results);

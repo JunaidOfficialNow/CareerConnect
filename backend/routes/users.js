@@ -5,10 +5,6 @@ const createHttpError = require('http-errors');
 const {logger} = require('../config/logger');
 const {default: mongoose} = require('mongoose');
 
-/* GET users listing. */
-router.get('/', function (req, res, next) {
-  res.send('respond with a resource');
-});
 
 router.post('/', async (req, res, next) => {
   const {name, email, age, phoneNumber} = req.body;
@@ -25,6 +21,22 @@ router.post('/', async (req, res, next) => {
     next(error);
   }
 });
+
+router.put('/:id', async (req, res, next) => {
+  const {userDto} = req.body;
+ try {
+   const userDoc = await userModel.findByIdAndUpdate(req.params.id, userDto)
+   if (userDoc) return res.json(userDoc);
+   next(createHttpError.NotFound('user not found'));
+ } catch (err) {
+  if (err.code === 11000) {
+    next(createHttpError.Conflict('email already in use'));
+  } else {
+    logger.error(err.message, err);
+    next(err);
+  }
+ }
+})
 
 router.post('/job-preferences/:userId', async (req, res, next) => {
   const {
@@ -68,5 +80,17 @@ router.post('/job-preferences/:userId', async (req, res, next) => {
     next(error);
   }
 });
+
+
+router.get('/:emailId', async (req, res, next) => {
+  try {
+    const userDoc = await userModel.findOne({email: req.params.emailId});
+    if (userDoc) return res.json(userDoc);
+    return next(createHttpError.NotFound('user not found'));
+  } catch (error) {
+    logger.error(error.message, error);
+    next(error);
+  }
+})
 
 module.exports = router;
