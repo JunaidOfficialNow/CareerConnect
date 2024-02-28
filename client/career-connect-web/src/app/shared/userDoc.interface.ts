@@ -3,7 +3,7 @@ export interface UserDoc {
   name: string;
   email: string;
   phoneNumber: string;
-  age: string;
+  dob: string;
   highestEducation: string;
   course?: string;
   skills: string[];

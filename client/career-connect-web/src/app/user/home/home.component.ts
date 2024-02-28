@@ -80,16 +80,19 @@ export class HomeComponent implements OnInit {
             id: this.currUser?._id,
             name: this.currUser?.name,
             email: this.currUser?.email,
-            age: this.currUser?.age,
+            dob: this.currUser?.dob,
             phoneNumber: this.currUser?.phoneNumber,
           },
         }
       )
       .afterClosed()
       .subscribe((data) => {
-        (this.currUser.name = data?.name!),
-          (this.currUser.age = data?.age!),
+        if (data) {
+          (this.currUser.name = data?.name!),
+          (this.currUser.dob = data?.dob!),
           (this.currUser.phoneNumber = data?.phoneNumber!);
+        }
+
       });
   }
 

@@ -23,6 +23,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { FormatedDescriptionPipeModule } from '../shared/formatedDescription.pipe';
 import { RelativePipeModule } from '../shared/getRelativeTime.pipe';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { RelativePipeModule } from '../shared/getRelativeTime.pipe';
     MatInputModule,
     FormsModule,
     MatIconModule,
+    MatDatepickerModule,
     MatMenuModule,
     MatCardModule,
     ReactiveFormsModule,

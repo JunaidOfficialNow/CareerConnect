@@ -42,7 +42,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       name: ['', Validators.required],
       email: ['', Validators.required],
-      age: ['', Validators.required],
+      dob: ['', Validators.required],
       phoneNumber: [
         '',
         [Validators.required, Validators.pattern('[6-9]\\d{9}')],
@@ -260,7 +260,7 @@ export class RegisterComponent implements OnInit, AfterViewInit, OnDestroy {
       this.registerService
         .createNewUser({
           name: this.basicDetailsFormGroup.value['name']!,
-          age: this.basicDetailsFormGroup.value['age']!,
+          dob: this.basicDetailsFormGroup.value['dob']!,
           phoneNumber: this.basicDetailsFormGroup.value['phoneNumber']!,
           email: this.basicDetailsFormGroup.value['email']!,
         })

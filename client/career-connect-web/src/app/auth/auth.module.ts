@@ -17,6 +17,7 @@ import { RegisterService } from './register/register.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox'
 import { DeslugifyPipe } from './register/deslugify.pipe';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 
 
@@ -32,6 +33,7 @@ import { DeslugifyPipe } from './register/deslugify.pipe';
     MatInputModule,
     MatFormFieldModule,
     MatStepperModule,
+    MatDatepickerModule,
     MatButtonModule,
     ReactiveFormsModule,
     MatChipsModule,

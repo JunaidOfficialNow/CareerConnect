@@ -17,7 +17,7 @@ export class RegisterService {
     return this.http.post<{_id: string}>(environment.baseUrl + '/users', {
       name: userRequest.name,
       email: userRequest.email,
-      age: parseInt(userRequest.age),
+      dob: userRequest.dob,
       phoneNumber: userRequest.phoneNumber,
     })
   }

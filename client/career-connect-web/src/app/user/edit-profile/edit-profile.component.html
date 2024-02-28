@@ -35,11 +35,15 @@
   
   
         <div class="row">
-          <div class="col flex justify-center">
-            <mat-form-field class="full-width">
-              <input matInput placeholder="Age" name="age" type="number" formControlName="age">
-              @if(basicDetailsFormGroup.controls['age'].hasError('required')){
-              <mat-error>Age is required</mat-error>
+          <div class="col">
+            <mat-form-field>
+              <mat-label>Choose a date</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="dob">
+              <mat-hint>MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              @if (basicDetailsFormGroup.controls['dob'].hasError('required')) {
+                <mat-error>Select a deadline</mat-error>
               }
             </mat-form-field>
           </div>
