@@ -7,9 +7,9 @@ const {default: mongoose} = require('mongoose');
 
 
 router.post('/', async (req, res, next) => {
-  const {name, email, age, phoneNumber} = req.body;
+  const {name, email, dob, phoneNumber} = req.body;
   try {
-    const userDoc = await userModel.create({name, email, age, phoneNumber});
+    const userDoc = await userModel.create({name, email, dob, phoneNumber});
     logger.info('New user created', {name: userDoc.name, email: userDoc.email});
     if (userDoc) res.json(userDoc);
     else throw new createHttpError.InternalServerError();

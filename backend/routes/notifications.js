@@ -68,6 +68,7 @@ router.get('/for-you', async (req, res, next) => {
           category: {$regex: new RegExp(`^${slugify(query)}`, 'i')},
         },
       ],
+      deadline: {$gte: new Date()}
     });
     res.json(results);
   } catch (error) {

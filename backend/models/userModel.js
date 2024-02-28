@@ -42,8 +42,8 @@ const userSchema = new mongoose.Schema({
     maxLength: 10,
     minLength: 10,
   },
-  age: {
-    type: Number,
+  dob: {
+    type: Date,
     required: true,
   }, 
   highestEducation: {
